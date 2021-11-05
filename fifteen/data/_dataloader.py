@@ -4,11 +4,12 @@ Similar to the Pytorch dataloader, but stateless."""
 
 import dataclasses
 import math
-from multiprocess import Manager, Pool, Queue
-from typing import Callable, Generic, Iterable, List, Optional, Protocol, TypeVar
+from typing import Callable, Dict, Generic, Iterable, List, Optional, TypeVar
 
 import jax
 import numpy as onp
+from multiprocess import Process, Queue
+from typing_extensions import Protocol
 
 T = TypeVar("T")
 CollateFunction = Callable[[List[T]], T]
@@ -18,7 +19,7 @@ DatasetT = TypeVar("DatasetT", covariant=True)
 DataLoaderT = TypeVar("DataLoaderT")
 
 
-class DatasetProtocol(Protocol, Generic[DatasetT]):
+class DatasetProtocol(Protocol[DatasetT]):
     """Protocol for defining datasets."""
 
     def __getitem__(self, index: int) -> DatasetT:
@@ -31,13 +32,34 @@ class DatasetProtocol(Protocol, Generic[DatasetT]):
 PytreeType = TypeVar("PytreeType")
 
 
-@dataclasses.dataclass(frozen=True)
-class _MultiprocessFields:
-    """Attributes needed for multiprocessing dataloaders."""
+def _worker_loop(
+    dataset: DatasetProtocol,
+    index_queue: Queue,
+    result_queue: Queue,
+    collate_fn: CollateFunction,
+) -> None:
+    """Worker for dataloaders with multiprocessing."""
+    while True:
+        i, indices = index_queue.get()
+        result_queue.put((i, collate_fn([dataset[i] for i in indices])))
 
-    num_workers: int
-    pool: Pool  # We're currently not closing these correctly.
+
+@dataclasses.dataclass(frozen=True)
+class _WorkersState:
+    """Objects needed for managing and cleaning up after workers.."""
+
+    workers: List[Process]
+    index_queue: Queue
     result_queue: Queue
+
+    def __del__(self):
+        """Clean up workers."""
+        self.index_queue.close()
+        self.result_queue.close()
+        for w in self.workers:
+            w.kill()
+            w.join()
+            w.close()
 
 
 @dataclasses.dataclass(frozen=True)
@@ -48,7 +70,6 @@ class DataLoader(Generic[DataLoaderT]):
     arrays or Pytrees. `.minibatches()` can then be used to construct an (optionally
     shuffled) iterable over minibatches of stacked items."""
 
-    # Only two required arguments: our dataset and batch size.
     dataset: DatasetProtocol[DataLoaderT]
     batch_size: int
 
@@ -63,29 +84,50 @@ class DataLoader(Generic[DataLoaderT]):
     )
     """Collate function. By default, we simply stack along `axis=0`."""
 
-    multiprocess_fields: Optional[_MultiprocessFields] = dataclasses.field(init=False)
+    workers_state: Optional[_WorkersState] = dataclasses.field(init=False)
 
     def __post_init__(self):
-        # Create a process pool on instantiation, if `num_workers > 0`.
-        object.__setattr__(
-            self,
-            "multiprocess_fields",
-            _MultiprocessFields(
-                num_workers=self.num_workers,
-                pool=Pool(processes=self.num_workers),
-                result_queue=Manager().Queue(maxsize=self.num_workers * 2),
-            )
-            if self.num_workers > 0
-            else None,
-        )
+        # Create workers on instantiation.
+        if self.num_workers == 0:
+            object.__setattr__(self, "workers_state", None)
+        else:
+            # m = Manager()
+            index_queue = Queue()
+            result_queue = Queue(maxsize=self.num_workers)
 
-    def minibatches(self, seed: Optional[int]) -> Iterable[DataLoaderT]:
+            assert self.num_workers > 0
+            workers = []
+            for i in range(self.num_workers):
+                w = Process(
+                    target=_worker_loop,
+                    args=(
+                        self.dataset,
+                        index_queue,
+                        result_queue,
+                        self.collate_fn,
+                    ),
+                )
+                w.daemon = True
+                w.start()
+                workers.append(w)
+
+            object.__setattr__(
+                self,
+                "workers_state",
+                _WorkersState(
+                    workers=workers,
+                    index_queue=index_queue,
+                    result_queue=result_queue,
+                ),
+            )
+
+    def minibatches(self, shuffle_seed: Optional[int]) -> Iterable[DataLoaderT]:
         """Returns an iterable over minibatches for our dataset. Optionally shuffled using
         a random seed."""
 
         indices = onp.arange(len(self.dataset))
-        if seed is not None:
-            onp.random.default_rng(seed=seed).shuffle(indices)
+        if shuffle_seed is not None:
+            onp.random.default_rng(seed=shuffle_seed).shuffle(indices)
 
         minibatch_count = indices.shape[0] / self.batch_size
         if self.drop_last:
@@ -110,26 +152,41 @@ class _Minibatches(Iterable[DataLoaderT], Generic[DataLoaderT]):
     minibatch_count: int
 
     def __iter__(self):
-        mp_fields = self.dataloader.multiprocess_fields
+        dataset = self.dataloader.dataset
         collate_fn = self.dataloader.collate_fn
-        if mp_fields is None:
+        num_workers = self.dataloader.num_workers
+        if num_workers == 0:
             # Simple synchronous iterator.
             for i in range(self.minibatch_count):
                 indices = self._get_minibatch_indices(i)
-                items = [self.dataloader.dataset[i] for i in indices]
+                items = [dataset[i] for i in indices]
                 yield collate_fn(items)
         else:
-            dataset = self.dataloader.dataset
+            mp_fields = self.dataloader.workers_state
             result_queue = mp_fields.result_queue
-            mp_fields.pool.map_async(
-                lambda indices: result_queue.put(
-                    collate_fn(list(map(dataset.__getitem__, indices)))
-                ),
-                [self._get_minibatch_indices(i) for i in range(self.minibatch_count)],
-                error_callback=print,
-            )
+            queued_minibatches = 0
+
+            # Immediately put all minibatch indices on the index queue. This might be problematic
+            # for extremely large datasets.
             for i in range(self.minibatch_count):
-                yield result_queue.get()
+                mp_fields.index_queue.put(
+                    (i, self._get_minibatch_indices(queued_minibatches))
+                )
+
+            # Yield minibatches in ascending order; note that they may be shuffled when
+            # coming off of the queue.
+            minibatch_cache: Dict[int, DataLoaderT] = {}
+            for i in range(self.minibatch_count):
+                if i not in minibatch_cache:
+                    while True:
+                        received_i, minibatch = result_queue.get()
+                        if received_i == i:
+                            yield minibatch
+                            break
+                        else:
+                            minibatch_cache[received_i] = minibatch
+                else:
+                    yield minibatch_cache.pop(i)
 
     def _get_minibatch_indices(self, index: int) -> onp.ndarray:
         start_index = self.dataloader.batch_size * index
@@ -156,7 +213,7 @@ def main() -> None:
 
         for name, loader in loaders.items():
             start_time = time.time()
-            for minibatch in tqdm(loader.minibatches(seed=0)):
+            for minibatch in tqdm(loader.minibatches(shuffle_seed=0)):
                 time.sleep(0.1)
             print(
                 f"Simulated training time on {name} dataloader:",
