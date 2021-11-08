@@ -28,21 +28,26 @@ class TensorboardLogData:
     scalars: Dict[str, ArrayOrFloat] = jax_dataclasses.field(default_factory=dict)
     histograms: Dict[str, Array] = jax_dataclasses.field(default_factory=dict)
 
-    @staticmethod
-    def merge(a: "TensorboardLogData", b: "TensorboardLogData") -> "TensorboardLogData":
+    def extend(self, other: "TensorboardLogData") -> "TensorboardLogData":
         return TensorboardLogData(
-            scalars=dict(**a.scalars, **b.scalars),
-            histograms=dict(**a.histograms, **b.histograms),
+            scalars=dict(**self.scalars, **other.scalars),
+            histograms=dict(**self.histograms, **other.histograms),
         )
 
-    def extend(
+    def extend_scalars(
         self,
         scalars: Dict[str, ArrayOrFloat] = {},
+    ) -> "TensorboardLogData":
+        return self.extend(
+            TensorboardLogData(scalars=scalars, histograms={}),
+        )
+
+    def extend_histograms(
+        self,
         histograms: Dict[str, Array] = {},
-    ):
-        return TensorboardLogData.merge(
-            self,
-            TensorboardLogData(scalars=scalars, histograms=histograms),
+    ) -> "TensorboardLogData":
+        return self.extend(
+            TensorboardLogData(scalars={}, histograms=histograms),
         )
 
 
@@ -168,7 +173,9 @@ class Experiment:
             step=step,
             prefix=prefix,
         )
-        assert state_dict is not None, "No checkpoint found!"
+        if state_dict is None:
+            raise FileNotFoundError("No checkpoint found!")
+        self._print(f"Successfully loaded checkpoint!")
         return flax.serialization.from_state_dict(target, state_dict)
 
     @property
@@ -186,15 +193,15 @@ class Experiment:
         self,
         log_data: TensorboardLogData,
         step: int,
-        log_scalars_every_n: Optional[int] = None,
-        log_histograms_every_n: Optional[int] = None,
+        log_scalars_every_n: int = 1,
+        log_histograms_every_n: int = 1,
     ):
         """Logging helper for Tensorboard."""
         # In the future, we could make this JIT-friendly with a host callback.
-        if log_scalars_every_n is not None and step % log_scalars_every_n == 0:
+        if step % log_scalars_every_n == 0:
             for k, v in log_data.scalars.items():
                 self.summary_writer.scalar(k, v, step=step)
-        if log_histograms_every_n is not None and step % log_histograms_every_n == 0:
+        if step % log_histograms_every_n == 0:
             for k, v in log_data.histograms.items():
                 self.summary_writer.histogram(k, v, step=step)
 
