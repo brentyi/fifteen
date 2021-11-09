@@ -28,25 +28,38 @@ class TensorboardLogData:
     scalars: Dict[str, ArrayOrFloat] = jax_dataclasses.field(default_factory=dict)
     histograms: Dict[str, Array] = jax_dataclasses.field(default_factory=dict)
 
-    def extend(self, other: "TensorboardLogData") -> "TensorboardLogData":
+    def prefix(self, prefix: str) -> "TensorboardLogData":
+        """Add a prefix to all contained tag names. Useful for scoping, or creating those little
+        folders in the Tensorboard scalar view."""
+
+        def _prefix(x: Dict[str, T]) -> Dict[str, T]:
+            return {prefix + k: v for k, v in x.items()}
+
+        return TensorboardLogData(
+            scalars=_prefix(self.scalars),
+            histograms=_prefix(self.histograms),
+        )
+
+    def merge(self, other: "TensorboardLogData") -> "TensorboardLogData":
+        """Merge two log data structures."""
         return TensorboardLogData(
             scalars=dict(**self.scalars, **other.scalars),
             histograms=dict(**self.histograms, **other.histograms),
         )
 
-    def extend_scalars(
+    def merge_scalars(
         self,
         scalars: Dict[str, ArrayOrFloat] = {},
     ) -> "TensorboardLogData":
-        return self.extend(
+        return self.merge(
             TensorboardLogData(scalars=scalars, histograms={}),
         )
 
-    def extend_histograms(
+    def merge_histograms(
         self,
         histograms: Dict[str, Array] = {},
     ) -> "TensorboardLogData":
-        return self.extend(
+        return self.merge(
             TensorboardLogData(scalars={}, histograms=histograms),
         )
 
