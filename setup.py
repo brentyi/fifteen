@@ -22,6 +22,8 @@ setup(
         "jax_dataclasses",
         "termcolor",
         "types-termcolor",
+        "typing_extensions",
+        "multiprocess",
     ],
     classifiers=[
         "Programming Language :: Python :: 3.7",

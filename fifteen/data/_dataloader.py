@@ -46,7 +46,7 @@ def _worker_loop(
 
 @dataclasses.dataclass(frozen=True)
 class _WorkersState:
-    """Objects needed for managing and cleaning up after workers.."""
+    """Objects needed for managing and cleaning up after workers."""
 
     workers: List[Process]
     index_queue: Queue
