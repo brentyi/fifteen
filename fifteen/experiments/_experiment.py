@@ -6,7 +6,7 @@ Source: https://github.com/brentyi/dfgo/blob/master/lib/experiment_files.py
 import dataclasses
 import pathlib
 import shutil
-from typing import Any, Dict, Optional, Type, TypeVar, Union, overload
+from typing import Any, Dict, Optional, Type, TypeVar, Union
 
 import flax.metrics.tensorboard
 import flax.training.checkpoints
@@ -188,7 +188,7 @@ class Experiment:
         )
         if state_dict is None:
             raise FileNotFoundError("No checkpoint found!")
-        self._print(f"Successfully loaded checkpoint!")
+        self._print("Successfully loaded checkpoint!")
         return flax.serialization.from_state_dict(target, state_dict)
 
     @property

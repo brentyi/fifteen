@@ -10,7 +10,9 @@ def pdb_safety_net():
     When called, PDB will be automatically opened when either (a) the user hits Ctrl+C
     or (b) we encounter an uncaught exception. Helpful for bypassing minor errors,
     diagnosing problems, and rescuing unsaved models.
-    """
+
+    Approximately emulates launching a script via
+    `python -m pdb -c continue script_name.py`."""
 
     # Open PDB on Ctrl+C
     def handler(sig, frame):

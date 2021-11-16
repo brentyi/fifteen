@@ -1,6 +1,6 @@
 """Generic dataloader implementation, along with an associated dataset specification.
 
-Similar to the Pytorch dataloader, but stateless."""
+Similar to PyTorch's dataloader, but fewer features and stateless."""
 
 import dataclasses
 import math
@@ -57,14 +57,14 @@ class _WorkersState:
         self.index_queue.close()
         self.result_queue.close()
         for w in self.workers:
-            w.kill()
+            w.terminate()
             w.join()
             w.close()
 
 
 @dataclasses.dataclass(frozen=True)
 class DataLoader(Generic[DataLoaderT]):
-    """Dataloader. Inspired by Pytorch's, but stateless.
+    """Dataloader. Inspired by PyTorch's, but fewer features and stateless.
 
     Expects an arbitrary indexable dataset, which should map integer indices to items as
     arrays or Pytrees. `.minibatches()` can then be used to construct an (optionally
@@ -77,7 +77,11 @@ class DataLoader(Generic[DataLoaderT]):
     """Set to 0 to disable multiprocessing."""
 
     drop_last: bool = True
-    """Drop last minibatch if dataset is not evenly divisible."""
+    """Drop last minibatch if dataset is not evenly divisible.
+
+    It's usually nice to have minibatches that are the same size; decreases the amount
+    of time (and memory) spent on JIT compilation in JAX and reduces any concern of
+    noisy gradients from very small batch sizes."""
 
     collate_fn: CollateFunction = lambda items: jax.tree_map(
         lambda *arrays: onp.stack(arrays, axis=0), *items
@@ -121,6 +125,15 @@ class DataLoader(Generic[DataLoaderT]):
                 ),
             )
 
+    def minibatch_count(self) -> int:
+        """Compute the number of minibatches per epoch."""
+        minibatch_count = len(self.dataset) / self.batch_size
+        if self.drop_last:
+            minibatch_count = math.floor(minibatch_count)
+        else:
+            minibatch_count = math.ceil(minibatch_count)
+        return minibatch_count
+
     def minibatches(self, shuffle_seed: Optional[int]) -> Iterable[DataLoaderT]:
         """Returns an iterable over minibatches for our dataset. Optionally shuffled using
         a random seed."""
@@ -129,12 +142,9 @@ class DataLoader(Generic[DataLoaderT]):
         if shuffle_seed is not None:
             onp.random.default_rng(seed=shuffle_seed).shuffle(indices)
 
-        minibatch_count = indices.shape[0] / self.batch_size
+        minibatch_count = self.minibatch_count()
         if self.drop_last:
-            indices = indices[: math.floor(minibatch_count) * self.batch_size]
-            minibatch_count = math.floor(minibatch_count)
-        else:
-            minibatch_count = math.ceil(minibatch_count)
+            indices = indices[: minibatch_count * self.batch_size]
 
         return _Minibatches(
             dataloader=self,
