@@ -174,14 +174,11 @@ class _Minibatches(Iterable[DataLoaderT], Generic[DataLoaderT]):
         else:
             mp_fields = self.dataloader.workers_state
             result_queue = mp_fields.result_queue
-            queued_minibatches = 0
 
             # Immediately put all minibatch indices on the index queue. This might be problematic
             # for extremely large datasets.
             for i in range(self.minibatch_count):
-                mp_fields.index_queue.put(
-                    (i, self._get_minibatch_indices(queued_minibatches))
-                )
+                mp_fields.index_queue.put((i, self._get_minibatch_indices(i)))
 
             # Yield minibatches in ascending order; note that they may be shuffled when
             # coming off of the queue.
