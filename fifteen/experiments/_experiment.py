@@ -2,18 +2,19 @@
 
 Source: https://github.com/brentyi/dfgo/blob/master/lib/experiment_files.py
 """
-
 import dataclasses
 import pathlib
 import shutil
 from typing import Any, Dict, Optional, Type, TypeVar, Union
 
+import dcargs
 import flax.metrics.tensorboard
 import flax.training.checkpoints
 import jax_dataclasses
 import numpy as onp
 import yaml
 from jax import numpy as jnp
+from typing_extensions import get_origin
 
 T = TypeVar("T")
 PytreeType = TypeVar("PytreeType")
@@ -21,6 +22,12 @@ Pytree = Any
 
 Array = Union[jnp.ndarray, onp.ndarray]
 ArrayOrFloat = Union[Array, float]
+
+
+def _get_origin(cls: Type) -> Type:
+    """Get origin type; helpful for unwrapping generics, etc."""
+    origin = get_origin(cls)
+    return cls if origin is None else origin
 
 
 @jax_dataclasses.pytree_dataclass
@@ -131,24 +138,33 @@ class Experiment:
 
     def write_metadata(self, name: str, object: Any) -> None:
         """Serialize an object as a yaml file, then save it to the experiment's metadata
-        directory."""
+        directory. Includes special handling for dataclasses (via dcargs)."""
         self._ensure_directory_exists(self.data_dir)
         assert not name.endswith(".yaml")
 
         path = self.data_dir / (name + ".yaml")
         self._print("Writing metadata to", path)
         with open(path, "w") as file:
-            file.write(yaml.dump(object))
+            file.write(
+                dcargs.to_yaml(object)
+                if dataclasses.is_dataclass(object)
+                else yaml.dump(object)
+            )
 
     def read_metadata(self, name: str, expected_type: Type[T]) -> T:
-        """Load an object from the experiment's metadata directory."""
+        """Load an object from the experiment's metadata directory. Includes special
+        handling for dataclasses (via dcargs)."""
         path = self.data_dir / (name + ".yaml")
 
         self._print("Reading metadata from", path)
         with open(path, "r") as file:
-            output = yaml.load(
-                file.read(),
-                Loader=yaml.Loader,  # Unsafe loading!
+            output = (
+                dcargs.from_yaml(expected_type, file.read())
+                if dataclasses.is_dataclass(_get_origin(expected_type))
+                else yaml.load(
+                    file.read(),
+                    Loader=yaml.Loader,  # Unsafe loading!
+                )
             )
         assert isinstance(output, expected_type)
         return output
@@ -159,6 +175,8 @@ class Experiment:
         step: int,
         prefix: str = "checkpoint_",
         keep: int = 1,
+        overwrite: bool = False,
+        keep_every_n_steps: Optional[int] = None,
     ) -> str:
         """Thin wrapper around flax's `save_checkpoint()` function.
         Returns a file name, as a string."""
@@ -169,6 +187,8 @@ class Experiment:
             step=step,
             prefix=prefix,
             keep=keep,
+            overwrite=overwrite,
+            keep_every_n_steps=keep_every_n_steps,
         )
         self._print("Saved checkpoint to", filename)
         return filename

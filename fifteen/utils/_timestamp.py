@@ -1,5 +1,4 @@
 import datetime
-from typing import Literal
 
 
 def timestamp() -> str:
