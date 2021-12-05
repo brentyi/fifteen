@@ -3,8 +3,7 @@ from typing import Any, Callable
 from jax.experimental import host_callback as hcb
 
 
-def _hcb_print(
-    self,
+def hcb_print(
     string_from_args: Callable[..., str],
     *args: Any,
     **kwargs: Any,
