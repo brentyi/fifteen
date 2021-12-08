@@ -17,10 +17,12 @@ setup(
     package_data={"fifteen": ["py.typed"]},
     python_requires=">=3.7",
     install_requires=[
+        "flax",
         "jax",
         "jaxlib",
         "jax_dataclasses",
         "termcolor",
+        "tensorflow", # Needed for Flax serialization/Tensorboard; primarily for `tensorflow.io.gfile`.
         "types-termcolor",
         "typing_extensions",
         "multiprocess",
