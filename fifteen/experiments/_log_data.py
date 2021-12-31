@@ -53,3 +53,25 @@ class TensorboardLogData:
             scalars=self.scalars,
             histograms=dict(**self.histograms, **histograms),
         )
+
+    def fix_sharded_scalars(self) -> "TensorboardLogData":
+        """When log data is returned from a function transformed by `pmap`, scalars will
+        often be returned as sharded arrays, distributed across multiple devices. This
+        makes them no longer scalars, and breaks compatibility with standard logging
+        utilities.
+
+        To fix this, we replace each sharded array in the scalar dictionary with the
+        first value from flattened representation. Histogram data is unmodified.
+
+        In the future, this might also support averaging across the scalars, but in the
+        meantime averaging can be accomplished in the pmapped function with
+        `jax.lax.pmean`. Some performance analysis could be done here."""
+
+        scalars: Dict[str, Scalar] = {}
+        for k, v in self.scalars.items():
+            assert isinstance(v, jax.lib.xla_extension.pmap_lib.ShardedDeviceArray)
+
+            # We pull out the first value on the first device.
+            scalars[k] = v[tuple(0 for _ in range(len(v.shape)))]
+
+        return TensorboardLogData(scalars=scalars, histograms=self.histograms)

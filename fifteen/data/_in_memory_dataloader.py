@@ -35,7 +35,7 @@ class InMemoryDataLoader(Generic[PyTreeType], DataLoaderProtocol[PyTreeType]):
 
     def __post_init__(self):
         shapes = [x.shape for x in jax.tree_leaves(self.dataset)]
-        assert len(shapes) > 0, "ataset should contain at least one array."
+        assert len(shapes) > 0, "Dataset should contain at least one array."
 
         sample_counts = [shape[0] for shape in shapes]
         assert all(

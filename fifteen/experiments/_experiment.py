@@ -11,6 +11,7 @@ from typing import Any, Optional, Type, TypeVar
 import dcargs
 import flax.metrics.tensorboard
 import flax.training.checkpoints
+import jax
 import yaml
 from typing_extensions import get_origin
 
@@ -146,11 +147,20 @@ class Experiment:
         log_scalars_every_n: int = 1,
         log_histograms_every_n: int = 1,
     ):
-        """Logging helper for Tensorboard."""
-        # We could eaily make this JIT-friendly with a host callback, but that might
+        """Logging helper for Tensorboard.
+
+        For TensorboardLogData instances returned from `pmap`-transformed functions, see
+        `TensorboardLogData.fix_sharded_scalars()`."""
+        # We could easily make this JIT-friendly with a host callback, but that might
         # encourage unnecessarily un-modular design patterns.
         if step % log_scalars_every_n == 0:
             for k, v in log_data.scalars.items():
+                if hasattr(v, "shape"):
+                    shape = v.shape  # type: ignore
+                    assert shape == (), (
+                        f"Got {shape=} instead of a scalar. For use with `jax.pmap`,"
+                        "`log_data.fix_sharded_scalars()` may be helpful."
+                    )
                 self.summary_writer.scalar(k, v, step=step)
         if step % log_histograms_every_n == 0:
             for k, v in log_data.histograms.items():
