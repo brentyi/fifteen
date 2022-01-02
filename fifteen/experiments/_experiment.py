@@ -104,7 +104,7 @@ class Experiment:
         Returns a file name, as a string."""
         self._mkdir_if_needed(self.data_dir)
         filename = flax.training.checkpoints.save_checkpoint(
-            ckpt_dir=self.data_dir,
+            ckpt_dir=str(self.data_dir),
             target=target,
             step=step,
             prefix=prefix,
@@ -123,7 +123,7 @@ class Experiment:
     ) -> PytreeType:
         """Thin wrapper around flax's `restore_checkpoint()` function."""
         state_dict = flax.training.checkpoints.restore_checkpoint(
-            ckpt_dir=self.data_dir,
+            ckpt_dir=str(self.data_dir),
             target=None,  # Allows us to raise an error if no checkpoint was found.
             step=step,
             prefix=prefix,
@@ -138,7 +138,7 @@ class Experiment:
     @cached_property
     def summary_writer(self) -> flax.metrics.tensorboard.SummaryWriter:
         """Property for accessing a summary writer for Tensorboard logging."""
-        return flax.metrics.tensorboard.SummaryWriter(log_dir=self.data_dir)
+        return flax.metrics.tensorboard.SummaryWriter(log_dir=str(self.data_dir))
 
     def log(
         self,
