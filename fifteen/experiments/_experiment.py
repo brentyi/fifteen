@@ -11,7 +11,6 @@ from typing import Any, Optional, Type, TypeVar
 import dcargs
 import flax.metrics.tensorboard
 import flax.training.checkpoints
-import jax
 import yaml
 from typing_extensions import get_origin
 
