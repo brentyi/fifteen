@@ -46,7 +46,7 @@ def prefetching_map(
     that are still living on the CPU.
 
     For multi-device use cases, we can combine this function with
-    `fifteen.data.sharding_map()`."""
+    :meth:`fifteen.data.sharding_map()`."""
 
     if hasattr(inputs, "__len__"):
         return _PrefetchingMapSized(
@@ -78,7 +78,7 @@ class _PrefetchingMap(Iterable[PyTreeType]):
             if self.device is not None:
                 assert not isinstance(
                     item, jax.lib.xla_extension.pmap_lib.ShardedDeviceArray
-                ), "Should not move sharded arrays -- perhaps device should be set to `None`?"
+                ), "Should not move sharded arrays -- device should be set to `None`."
                 item = jax.device_put(item, device=self.device)
             queue.append(item)
 

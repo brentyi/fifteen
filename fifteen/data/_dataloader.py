@@ -52,10 +52,10 @@ class DataLoader(Generic[PyTreeType], DataLoaderProtocol[PyTreeType]):
     """Multiprocessed data loader, targeted at datasets that are too large to fit into
     memory. Similar to PyTorch's data loader, but stateless.
 
-    Expects an arbitrary indexable dataset, which should implement __getitem__() and
-    __len__, and map integer indices to items as arrays or PyTrees. .minibatches() can
-    then be used to construct an (optionally shuffled) iterable over minibatches of
-    stacked items."""
+    Expects an arbitrary indexable dataset, which should implement `__getitem__()` and
+    `__len__()`, and map integer indices to items as arrays or PyTrees.
+    :meth:`minibatches()` can then be used to construct an (optionally shuffled)
+    iterable over minibatches of stacked items."""
 
     dataset: MapDatasetProtocol[PyTreeType]
     minibatch_size: int

@@ -13,7 +13,7 @@ def stopwatch(label: str = "block") -> Generator[None, None, None]:
 
     Example:
     ```
-    with fannypack.utils.stopwatch("name"):
+    with fifteen.utils.stopwatch("name"):
         time.sleep(1.0)
     ```
 

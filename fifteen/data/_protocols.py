@@ -8,20 +8,20 @@ ContainedType = TypeVar("ContainedType", covariant=True)
 
 
 class SizedIterable(Iterable[ContainedType], Sized, Protocol[ContainedType]):
-    """Protocol for objects that define both `__iter__` and `__len__` methods.
+    """Protocol for objects that define both `__iter__()` and `__len__()` methods.
 
     This is particularly useful for managing minibatches, which can be iterated over but
-    only in order (due to multiprocessing/prefetching optimizations), and for which
-    length evaluation is useful for tools like `tqdm`."""
+    only in order due to multiprocessing/prefetching optimizations, and for which length
+    evaluation is useful for tools like `tqdm`."""
 
 
 class MapDatasetProtocol(Protocol[ContainedType]):
     """Protocol for defining PyTorch-style "map" datasets, which implement two methods:
-    __getitem__() for loading single samples and __len__() for counting the total
+    `__getitem__()` for loading single samples and `__len__()` for counting the total
     number of samples.
 
     This is similar to collections.abc.Mapping, but does not require implementations of
-    __contains__."""
+    `__contains__()`."""
 
     def __getitem__(self, index: int) -> ContainedType:
         ...

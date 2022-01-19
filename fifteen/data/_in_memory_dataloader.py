@@ -18,8 +18,8 @@ class InMemoryDataLoader(Generic[PyTreeType], DataLoaderProtocol[PyTreeType]):
     The first axis of every array should correspond to the total sample count; each
     sample will therefore be indexable via `jax.tree_map(lambda x: x[i, ...], dataset)`.
 
-    `.minibatches()` can then be used to construct an (optionally shuffled) sequence of
-    minibatches."""
+    :meth:`minibatches()` can then be used to construct an (optionally shuffled)
+    sequence of minibatches."""
 
     dataset: PyTreeType
     minibatch_size: int

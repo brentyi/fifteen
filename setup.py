@@ -17,6 +17,7 @@ setup(
     package_data={"fifteen": ["py.typed"]},
     python_requires=">=3.7",
     install_requires=[
+        "dcargs",
         "flax",
         "jax",
         "jaxlib",

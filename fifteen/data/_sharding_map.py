@@ -33,12 +33,9 @@ def sharding_map(
     """Maps iterables over PyTrees to iterables over sharded PyTrees, which are
     distributed on multiple devices.
 
-    Takes as input leaf shapes
-        (N, ...)
-    and maps as output to an iterable with leaf shapes
-        (device_count, N // device_count, ...).
-    where the leading axis corresponds to the index of the device that each shard is
-    committed to."""
+    Takes as input leaf shapes `(N, ...)`, and maps as output to an iterable with leaf
+    shapes `(device_count, N // device_count, ...)`, where the leading axis corresponds to
+    the index of the device that each shard is committed to."""
 
     if hasattr(inputs, "__len__"):
         return _ShardingMapSized(cast(SizedIterable[PyTreeType], inputs), devices)

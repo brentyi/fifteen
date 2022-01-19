@@ -12,7 +12,7 @@ Scalar = Union[Array, float, int]
 
 @jax_dataclasses.pytree_dataclass
 class TensorboardLogData:
-    """Data structure for managing data meant for logging to Tensorboard."""
+    """Data structure for logging to Tensorboard."""
 
     scalars: Dict[str, Scalar] = jax_dataclasses.field(default_factory=dict)
     histograms: Dict[str, Array] = jax_dataclasses.field(default_factory=dict)
