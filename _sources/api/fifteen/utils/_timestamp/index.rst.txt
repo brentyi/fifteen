@@ -1,0 +1,26 @@
+:orphan:
+
+:mod:`fifteen.utils._timestamp`
+===============================
+
+.. py:module:: fifteen.utils._timestamp
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.utils._timestamp.timestamp
+
+
+
+.. function:: timestamp() -> str
+
+   Get a current timestamp as a string. Example format: ``2021-11-05-15:46:32``.
+
+

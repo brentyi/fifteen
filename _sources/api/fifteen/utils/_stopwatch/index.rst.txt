@@ -1,0 +1,38 @@
+:orphan:
+
+:mod:`fifteen.utils._stopwatch`
+===============================
+
+.. py:module:: fifteen.utils._stopwatch
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.utils._stopwatch.stopwatch
+
+
+
+.. function:: stopwatch(label: str = 'block') -> Generator[None, None, None]
+
+   Helper for printing the runtime of a block of code.
+
+   Example:
+
+   .. code-block::
+
+      with fifteen.utils.stopwatch("name"):
+          time.sleep(1.0)
+
+   :param label: Label for block that's running.
+   :type label: str
+
+   :returns: *Generator* -- Context manager to place in ``with`` statement.
+
+

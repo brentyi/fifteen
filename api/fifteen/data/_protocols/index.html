@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fifteen.data._protocols &mdash; fifteen  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../" class="icon icon-home"> fifteen
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">fifteen</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home"></a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.data._protocols</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/api/fifteen/data/_protocols/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-fifteen.data._protocols">
+<span id="fifteen-data-protocols"></span><h1><a class="reference internal" href="#module-fifteen.data._protocols" title="fifteen.data._protocols"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.data._protocols</span></code></a><a class="headerlink" href="#module-fifteen.data._protocols" title="Permalink to this headline"></a></h1>
+<p>Structural supertypes for working with datasets and dataloaders.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.data._protocols.SizedIterable" title="fifteen.data._protocols.SizedIterable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SizedIterable</span></code></a></p></td>
+<td><p>Protocol for objects that define both <code class="docutils literal notranslate"><span class="pre">__iter__()</span></code> and <code class="docutils literal notranslate"><span class="pre">__len__()</span></code> methods.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fifteen.data._protocols.MapDatasetProtocol" title="fifteen.data._protocols.MapDatasetProtocol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MapDatasetProtocol</span></code></a></p></td>
+<td><p>Protocol for defining PyTorch-style &quot;map&quot; datasets, which implement two methods:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.data._protocols.DataLoaderProtocol" title="fifteen.data._protocols.DataLoaderProtocol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataLoaderProtocol</span></code></a></p></td>
+<td><p>Protocol for dataloaders, which are used to generate minibatches that can be</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.data._protocols.ContainedType" title="fifteen.data._protocols.ContainedType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContainedType</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="fifteen.data._protocols.ContainedType">
+<span class="sig-prename descclassname"><span class="pre">fifteen.data._protocols.</span></span><span class="sig-name descname"><span class="pre">ContainedType</span></span><a class="headerlink" href="#fifteen.data._protocols.ContainedType" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fifteen.data._protocols.SizedIterable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fifteen.data._protocols.</span></span><span class="sig-name descname"><span class="pre">SizedIterable</span></span><a class="reference internal" href="../../../../_modules/fifteen/data/_protocols/#SizedIterable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.data._protocols.SizedIterable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterable</span></code>[<a class="reference internal" href="#fifteen.data._protocols.ContainedType" title="fifteen.data._protocols.ContainedType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContainedType</span></code></a>], <code class="xref py py-obj docutils literal notranslate"><span class="pre">Sized</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">Protocol</span></code>[<a class="reference internal" href="#fifteen.data._protocols.ContainedType" title="fifteen.data._protocols.ContainedType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContainedType</span></code></a>]</p>
+<div class="graphviz"><img src="../../../../_images/inheritance-61ed5f49e4ab48683306c25c2de32d4dac635330.png" alt="Inheritance diagram of fifteen.data._protocols.SizedIterable" usemap="#inheritance79268f0d26" class="inheritance graphviz" /></div>
+<map id="inheritance79268f0d26" name="inheritance79268f0d26">
+<area shape="rect" id="node4" href="../#fifteen.data.SizedIterable" target="_top" title="Protocol for objects that define both `__iter__()` and `__len__()` methods." alt="" coords="128,79,235,104"/>
+</map><p>Protocol for objects that define both <code class="docutils literal notranslate"><span class="pre">__iter__()</span></code> and <code class="docutils literal notranslate"><span class="pre">__len__()</span></code> methods.</p>
+<p>This is particularly useful for managing minibatches, which can be iterated over but
+only in order due to multiprocessing/prefetching optimizations, and for which length
+evaluation is useful for tools like <code class="docutils literal notranslate"><span class="pre">tqdm</span></code>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fifteen.data._protocols.MapDatasetProtocol">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fifteen.data._protocols.</span></span><span class="sig-name descname"><span class="pre">MapDatasetProtocol</span></span><a class="reference internal" href="../../../../_modules/fifteen/data/_protocols/#MapDatasetProtocol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.data._protocols.MapDatasetProtocol" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Protocol</span></code>[<a class="reference internal" href="#fifteen.data._protocols.ContainedType" title="fifteen.data._protocols.ContainedType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContainedType</span></code></a>]</p>
+<div class="graphviz"><img src="../../../../_images/inheritance-2b42a852b58f0659eeba8b102e2eb5178f78d8c6.png" alt="Inheritance diagram of fifteen.data._protocols.MapDatasetProtocol" usemap="#inheritancef6bfe74546" class="inheritance graphviz" /></div>
+<map id="inheritancef6bfe74546" name="inheritancef6bfe74546">
+<area shape="rect" id="node1" href="../#fifteen.data.MapDatasetProtocol" target="_top" title="Protocol for defining PyTorch&#45;style &quot;map&quot; datasets, which implement two methods:" alt="" coords="128,5,283,31"/>
+</map><p>Protocol for defining PyTorch-style “map” datasets, which implement two methods:
+<code class="docutils literal notranslate"><span class="pre">__getitem__()</span></code> for loading single samples and <code class="docutils literal notranslate"><span class="pre">__len__()</span></code> for counting the total
+number of samples.</p>
+<p>This is similar to collections.abc.Mapping, but does not require implementations of
+<code class="docutils literal notranslate"><span class="pre">__contains__()</span></code>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fifteen.data._protocols.MapDatasetProtocol.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ContainedType</span></span></span><a class="reference internal" href="../../../../_modules/fifteen/data/_protocols/#MapDatasetProtocol.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.data._protocols.MapDatasetProtocol.__getitem__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fifteen.data._protocols.MapDatasetProtocol.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../../../_modules/fifteen/data/_protocols/#MapDatasetProtocol.__len__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.data._protocols.MapDatasetProtocol.__len__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fifteen.data._protocols.DataLoaderProtocol">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fifteen.data._protocols.</span></span><span class="sig-name descname"><span class="pre">DataLoaderProtocol</span></span><a class="reference internal" href="../../../../_modules/fifteen/data/_protocols/#DataLoaderProtocol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.data._protocols.DataLoaderProtocol" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Protocol</span></code>[<a class="reference internal" href="#fifteen.data._protocols.ContainedType" title="fifteen.data._protocols.ContainedType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContainedType</span></code></a>]</p>
+<div class="graphviz"><img src="../../../../_images/inheritance-71ca86a127e82dd746e3c300248bc734d9d7e0b4.png" alt="Inheritance diagram of fifteen.data._protocols.DataLoaderProtocol" usemap="#inheritance9218a4dca1" class="inheritance graphviz" /></div>
+<map id="inheritance9218a4dca1" name="inheritance9218a4dca1">
+<area shape="rect" id="node1" href="../#fifteen.data.DataLoaderProtocol" target="_top" title="Protocol for dataloaders, which are used to generate minibatches that can be" alt="" coords="128,5,279,31"/>
+</map><p>Protocol for dataloaders, which are used to generate minibatches that can be
+iterated over.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fifteen.data._protocols.DataLoaderProtocol.minibatch_size">
+<span class="sig-name descname"><span class="pre">minibatch_size</span></span><em class="property"><span class="w"> </span><span class="pre">:int</span></em><a class="headerlink" href="#fifteen.data._protocols.DataLoaderProtocol.minibatch_size" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fifteen.data._protocols.DataLoaderProtocol.drop_last">
+<span class="sig-name descname"><span class="pre">drop_last</span></span><em class="property"><span class="w"> </span><span class="pre">:bool</span></em><a class="headerlink" href="#fifteen.data._protocols.DataLoaderProtocol.drop_last" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fifteen.data._protocols.DataLoaderProtocol.minibatch_count">
+<span class="sig-name descname"><span class="pre">minibatch_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../../../_modules/fifteen/data/_protocols/#DataLoaderProtocol.minibatch_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.data._protocols.DataLoaderProtocol.minibatch_count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fifteen.data._protocols.DataLoaderProtocol.minibatches">
+<span class="sig-name descname"><span class="pre">minibatches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#fifteen.data._protocols.SizedIterable" title="fifteen.data._protocols.SizedIterable"><span class="pre">SizedIterable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ContainedType</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/fifteen/data/_protocols/#DataLoaderProtocol.minibatches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.data._protocols.DataLoaderProtocol.minibatches" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

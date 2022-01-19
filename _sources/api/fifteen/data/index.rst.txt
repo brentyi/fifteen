@@ -1,0 +1,247 @@
+:mod:`fifteen.data`
+===================
+
+.. py:module:: fifteen.data
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data.DataLoader
+   fifteen.data.InMemoryDataLoader
+   fifteen.data.DataLoaderProtocol
+   fifteen.data.MapDatasetProtocol
+   fifteen.data.SizedIterable
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data.prefetching_map
+   fifteen.data.sharding_map
+
+
+
+.. class:: DataLoader
+
+   Bases: :py:obj:`Generic`\ [\ :py:obj:`PyTreeType`\ ], :py:obj:`fifteen.data.DataLoaderProtocol`\ [\ :py:obj:`PyTreeType`\ ]
+
+   .. autoapi-inheritance-diagram:: fifteen.data.DataLoader
+      :parts: 1
+
+   Multiprocessed data loader, targeted at datasets that are too large to fit into
+   memory. Similar to PyTorch's data loader, but stateless.
+
+   Expects an arbitrary indexable dataset, which should implement ``__getitem__()`` and
+   ``__len__()``\ , and map integer indices to items as arrays or PyTrees.
+   :meth:`minibatches()` can then be used to construct an (optionally shuffled)
+   iterable over minibatches of stacked items.
+
+   .. attribute:: dataset
+      :annotation: :fifteen.data.MapDatasetProtocol[PyTreeType]
+
+      
+
+   .. attribute:: minibatch_size
+      :annotation: :int
+
+      
+
+   .. attribute:: num_workers
+      :annotation: :int = 0
+
+      Set to 0 to disable multiprocessing.
+
+
+   .. attribute:: drop_last
+      :annotation: :bool = True
+
+      Drop last minibatch if dataset is not evenly divisible.
+
+      It's usually nice to have minibatches that are the same size: it decreases the
+      amount of time (and memory) spent on JIT compilation in JAX and reduces concern of
+      noisy gradients from very small batch sizes.
+
+
+   .. attribute:: collate_fn
+      :annotation: :CollateFunction
+
+      Collate function. By default, we simply stack along ``axis=0``.
+
+
+   .. attribute:: workers_state
+      :annotation: :Optional[_WorkersState]
+
+      
+
+   .. method:: __post_init__(self)
+
+
+   .. method:: minibatch_count(self) -> int
+
+      Compute the number of minibatches per epoch.
+
+
+   .. method:: minibatches(self, shuffle_seed: Optional[int]) -> fifteen.data.SizedIterable[PyTreeType]
+
+      Returns an iterable over minibatches for our dataset. Optionally shuffled using
+      a random seed.
+
+
+
+.. class:: InMemoryDataLoader
+
+   Bases: :py:obj:`Generic`\ [\ :py:obj:`PyTreeType`\ ], :py:obj:`fifteen.data.DataLoaderProtocol`\ [\ :py:obj:`PyTreeType`\ ]
+
+   .. autoapi-inheritance-diagram:: fifteen.data.InMemoryDataLoader
+      :parts: 1
+
+   Simple data loader for in-memory datasets, stored as arrays within a PyTree
+   structure.
+
+   The first axis of every array should correspond to the total sample count; each
+   sample will therefore be indexable via ``jax.tree_map(lambda x: x[i, ...], dataset)``.
+
+   :meth:`minibatches()` can then be used to construct an (optionally shuffled)
+   sequence of minibatches.
+
+   .. attribute:: dataset
+      :annotation: :PyTreeType
+
+      
+
+   .. attribute:: minibatch_size
+      :annotation: :int
+
+      
+
+   .. attribute:: drop_last
+      :annotation: :bool = True
+
+      Drop last minibatch if dataset is not evenly divisible.
+
+      It's usually nice to have minibatches that are the same size: it decreases the
+      amount of time (and memory) spent on JIT compilation in JAX and reduces concern of
+      noisy gradients from very small batch sizes.
+
+
+   .. attribute:: sample_count
+      :annotation: :int
+
+      
+
+   .. method:: __post_init__(self)
+
+
+   .. method:: minibatch_count(self) -> int
+
+      Compute the number of minibatches per epoch.
+
+
+   .. method:: minibatches(self, shuffle_seed: Optional[int]) -> Sequence[PyTreeType]
+
+      Returns an iterable over minibatches for our dataset. Optionally shuffled using
+      a random seed.
+
+
+
+.. function:: prefetching_map(inputs: fifteen.data.SizedIterable[PyTreeType], device: Optional[jax.lib.xla_client.Device] = None, buffer_size: int = 2) -> fifteen.data.SizedIterable[PyTreeType]
+              prefetching_map(inputs: Iterable[PyTreeType], device: Optional[jax.lib.xla_client.Device] = None, buffer_size: int = 2) -> Iterable[PyTreeType]
+
+   Maps iterables over PyTrees to an identical iterable, but with a prefetching
+   buffer under the hood. Adapted from ``flax.jax_utils.prefetch_to_device()``.
+
+   This can improve parallelization for GPUs, particularly when memory is re-allocated
+   before freeing is finished. When the buffer size is set to 2, we make it explicit
+   that two sets of data should live in GPU memory at once: for a standard training
+   loop, this is typically both the "current" minibatch and the "next" one.
+
+   If a device is specified, we commit arrays (via ``jax.device_put()``\ ) before pushing them
+   onto the buffer. This should generally be set if the input iterable yields arrays
+   that are still living on the CPU.
+
+   For multi-device use cases, we can combine this function with
+   :meth:`fifteen.data.sharding_map()`.
+
+
+.. class:: DataLoaderProtocol
+
+   Bases: :py:obj:`Protocol`\ [\ :py:obj:`ContainedType`\ ]
+
+   .. autoapi-inheritance-diagram:: fifteen.data.DataLoaderProtocol
+      :parts: 1
+
+   Protocol for dataloaders, which are used to generate minibatches that can be
+   iterated over.
+
+   .. attribute:: minibatch_size
+      :annotation: :int
+
+      
+
+   .. attribute:: drop_last
+      :annotation: :bool
+
+      
+
+   .. method:: minibatch_count(self) -> int
+
+
+   .. method:: minibatches(self, shuffle_seed: Optional[int]) -> SizedIterable[ContainedType]
+
+
+
+.. class:: MapDatasetProtocol
+
+   Bases: :py:obj:`Protocol`\ [\ :py:obj:`ContainedType`\ ]
+
+   .. autoapi-inheritance-diagram:: fifteen.data.MapDatasetProtocol
+      :parts: 1
+
+   Protocol for defining PyTorch-style "map" datasets, which implement two methods:
+   ``__getitem__()`` for loading single samples and ``__len__()`` for counting the total
+   number of samples.
+
+   This is similar to collections.abc.Mapping, but does not require implementations of
+   ``__contains__()``.
+
+   .. method:: __getitem__(self, index: int) -> ContainedType
+
+
+   .. method:: __len__(self) -> int
+
+
+
+.. class:: SizedIterable
+
+   Bases: :py:obj:`Iterable`\ [\ :py:obj:`ContainedType`\ ], :py:obj:`Sized`, :py:obj:`Protocol`\ [\ :py:obj:`ContainedType`\ ]
+
+   .. autoapi-inheritance-diagram:: fifteen.data.SizedIterable
+      :parts: 1
+
+   Protocol for objects that define both ``__iter__()`` and ``__len__()`` methods.
+
+   This is particularly useful for managing minibatches, which can be iterated over but
+   only in order due to multiprocessing/prefetching optimizations, and for which length
+   evaluation is useful for tools like ``tqdm``.
+
+
+.. function:: sharding_map(inputs: fifteen.data.SizedIterable[PyTreeType], devices: Sequence[jax.lib.xla_client.Device]) -> fifteen.data.SizedIterable[PyTreeType]
+              sharding_map(inputs: Iterable[PyTreeType], devices: Sequence[jax.lib.xla_client.Device]) -> Iterable[PyTreeType]
+
+   Maps iterables over PyTrees to iterables over sharded PyTrees, which are
+   distributed on multiple devices.
+
+   Takes as input leaf shapes ``(N, ...)``\ , and maps as output to an iterable with leaf
+   shapes ``(device_count, N // device_count, ...)``\ , where the leading axis corresponds to
+   the index of the device that each shard is committed to.
+
+

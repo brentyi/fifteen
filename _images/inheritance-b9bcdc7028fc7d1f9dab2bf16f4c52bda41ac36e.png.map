@@ -1,0 +1,5 @@
+<map id="inheritanceb8bd3c3e8e" name="inheritanceb8bd3c3e8e">
+<area shape="rect" id="node1" href="../#fifteen.data.DataLoaderProtocol" target="_top" title="Protocol for dataloaders, which are used to generate minibatches that can be" alt="" coords="128,55,279,80"/>
+<area shape="rect" id="node4" href="../#fifteen.data.InMemoryDataLoader" target="_top" title="Simple data loader for in&#45;memory datasets, stored as arrays within a PyTree" alt="" coords="327,31,489,56"/>
+<area shape="rect" id="node3" title="Abstract base class for generic types." alt="" coords="167,5,239,31"/>
+</map>

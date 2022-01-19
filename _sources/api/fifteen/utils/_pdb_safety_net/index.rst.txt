@@ -1,0 +1,33 @@
+:orphan:
+
+:mod:`fifteen.utils._pdb_safety_net`
+====================================
+
+.. py:module:: fifteen.utils._pdb_safety_net
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.utils._pdb_safety_net.pdb_safety_net
+
+
+
+.. function:: pdb_safety_net()
+
+   Attaches a "safety net" for unexpected errors in a Python script.
+
+   When called, PDB will be automatically opened when either (a) the user hits Ctrl+C
+   or (b) we encounter an uncaught exception. Helpful for bypassing minor errors,
+   diagnosing problems, and rescuing unsaved models.
+
+   Approximately emulates launching a script via
+   ``python -m pdb -c continue script_name.py``.
+
+

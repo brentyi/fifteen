@@ -1,0 +1,45 @@
+:orphan:
+
+:mod:`fifteen.data._sharding_map`
+=================================
+
+.. py:module:: fifteen.data._sharding_map
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data._sharding_map.sharding_map
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data._sharding_map.PyTreeType
+
+
+.. data:: PyTreeType
+   
+
+   
+
+.. function:: sharding_map(inputs: fifteen.data.SizedIterable[PyTreeType], devices: Sequence[jax.lib.xla_client.Device]) -> fifteen.data.SizedIterable[PyTreeType]
+              sharding_map(inputs: Iterable[PyTreeType], devices: Sequence[jax.lib.xla_client.Device]) -> Iterable[PyTreeType]
+
+   Maps iterables over PyTrees to iterables over sharded PyTrees, which are
+   distributed on multiple devices.
+
+   Takes as input leaf shapes ``(N, ...)``\ , and maps as output to an iterable with leaf
+   shapes ``(device_count, N // device_count, ...)``\ , where the leading axis corresponds to
+   the index of the device that each shard is committed to.
+
+

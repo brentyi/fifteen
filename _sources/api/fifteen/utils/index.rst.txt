@@ -1,0 +1,67 @@
+:mod:`fifteen.utils`
+====================
+
+.. py:module:: fifteen.utils
+
+
+Package Contents
+----------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.utils.get_git_commit_hash
+   fifteen.utils.hcb_print
+   fifteen.utils.pdb_safety_net
+   fifteen.utils.stopwatch
+   fifteen.utils.timestamp
+
+
+
+.. function:: get_git_commit_hash(cwd: Optional[pathlib.Path] = None) -> str
+
+   Returns the current Git commit hash.
+
+
+.. function:: hcb_print(string_from_args: Callable[Ellipsis, str], *args: Any, **kwargs: Any) -> None
+
+   Helper for printing via a host callback. JIT-friendly!
+
+
+.. function:: pdb_safety_net()
+
+   Attaches a "safety net" for unexpected errors in a Python script.
+
+   When called, PDB will be automatically opened when either (a) the user hits Ctrl+C
+   or (b) we encounter an uncaught exception. Helpful for bypassing minor errors,
+   diagnosing problems, and rescuing unsaved models.
+
+   Approximately emulates launching a script via
+   ``python -m pdb -c continue script_name.py``.
+
+
+.. function:: stopwatch(label: str = 'block') -> Generator[None, None, None]
+
+   Helper for printing the runtime of a block of code.
+
+   Example:
+
+   .. code-block::
+
+      with fifteen.utils.stopwatch("name"):
+          time.sleep(1.0)
+
+   :param label: Label for block that's running.
+   :type label: str
+
+   :returns: *Generator* -- Context manager to place in ``with`` statement.
+
+
+.. function:: timestamp() -> str
+
+   Get a current timestamp as a string. Example format: ``2021-11-05-15:46:32``.
+
+

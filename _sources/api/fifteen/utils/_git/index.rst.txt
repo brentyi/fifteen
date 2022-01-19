@@ -1,0 +1,26 @@
+:orphan:
+
+:mod:`fifteen.utils._git`
+=========================
+
+.. py:module:: fifteen.utils._git
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.utils._git.get_git_commit_hash
+
+
+
+.. function:: get_git_commit_hash(cwd: Optional[pathlib.Path] = None) -> str
+
+   Returns the current Git commit hash.
+
+

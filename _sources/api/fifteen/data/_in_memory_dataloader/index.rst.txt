@@ -1,0 +1,90 @@
+:orphan:
+
+:mod:`fifteen.data._in_memory_dataloader`
+=========================================
+
+.. py:module:: fifteen.data._in_memory_dataloader
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data._in_memory_dataloader.InMemoryDataLoader
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data._in_memory_dataloader.PyTreeType
+
+
+.. data:: PyTreeType
+   
+
+   
+
+.. class:: InMemoryDataLoader
+
+   Bases: :py:obj:`Generic`\ [\ :py:obj:`PyTreeType`\ ], :py:obj:`fifteen.data.DataLoaderProtocol`\ [\ :py:obj:`PyTreeType`\ ]
+
+   .. autoapi-inheritance-diagram:: fifteen.data._in_memory_dataloader.InMemoryDataLoader
+      :parts: 1
+
+   Simple data loader for in-memory datasets, stored as arrays within a PyTree
+   structure.
+
+   The first axis of every array should correspond to the total sample count; each
+   sample will therefore be indexable via ``jax.tree_map(lambda x: x[i, ...], dataset)``.
+
+   :meth:`minibatches()` can then be used to construct an (optionally shuffled)
+   sequence of minibatches.
+
+   .. attribute:: dataset
+      :annotation: :PyTreeType
+
+      
+
+   .. attribute:: minibatch_size
+      :annotation: :int
+
+      
+
+   .. attribute:: drop_last
+      :annotation: :bool = True
+
+      Drop last minibatch if dataset is not evenly divisible.
+
+      It's usually nice to have minibatches that are the same size: it decreases the
+      amount of time (and memory) spent on JIT compilation in JAX and reduces concern of
+      noisy gradients from very small batch sizes.
+
+
+   .. attribute:: sample_count
+      :annotation: :int
+
+      
+
+   .. method:: __post_init__(self)
+
+
+   .. method:: minibatch_count(self) -> int
+
+      Compute the number of minibatches per epoch.
+
+
+   .. method:: minibatches(self, shuffle_seed: Optional[int]) -> Sequence[PyTreeType]
+
+      Returns an iterable over minibatches for our dataset. Optionally shuffled using
+      a random seed.
+
+
+

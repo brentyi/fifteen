@@ -1,0 +1,143 @@
+:orphan:
+
+:mod:`fifteen.experiments._experiment`
+======================================
+
+.. py:module:: fifteen.experiments._experiment
+
+.. autoapi-nested-parse::
+
+   Simple experiment manager for managing metadata, logs, and checkpoints.
+
+   Source: https://github.com/brentyi/dfgo/blob/master/lib/experiment_files.py
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.experiments._experiment.Experiment
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.experiments._experiment.T
+   fifteen.experiments._experiment.PytreeType
+   fifteen.experiments._experiment.Pytree
+   fifteen.experiments._experiment.cached_property
+
+
+.. data:: T
+   
+
+   
+
+.. data:: PytreeType
+   
+
+   
+
+.. data:: Pytree
+   
+
+   
+
+.. data:: cached_property
+   
+
+   
+
+.. class:: Experiment
+
+   We define an "experiment" as a simple directory, where files associated with some
+   run of a training script are co-located.
+
+   There's very little real code here; instead we use a common experiment data
+   directory to implement thin wrappers around:
+
+
+   * ``flax.training.checkpoints`` for checkpointing.
+   * ``PyYAML`` and ``dcargs`` for serializing metadata.
+   * ``flax.metrics.tensorboard.SummaryWriter`` for logging.
+
+   .. attribute:: data_dir
+      :annotation: :pathlib.Path
+
+      
+
+   .. attribute:: verbose
+      :annotation: :bool = True
+
+      
+
+   .. method:: write_metadata(self, name: str, object: Any) -> None
+
+      Serialize an object as a yaml file, then save it to the experiment's metadata
+      directory. Includes special handling for dataclasses (via dcargs).
+
+
+   .. method:: read_metadata(self, name: str, expected_type: Type[T]) -> T
+
+      Load an object from the experiment's metadata directory. Includes special
+      handling for dataclasses (via dcargs).
+
+
+   .. method:: save_checkpoint(self, target: Pytree, step: int, prefix: str = 'checkpoint_', keep: int = 1, overwrite: bool = False, keep_every_n_steps: Optional[int] = None) -> str
+
+      Thin wrapper around flax's ``save_checkpoint()`` function.
+      Returns a file name, as a string.
+
+
+   .. method:: restore_checkpoint(self, target: PytreeType, step: Optional[int] = None, prefix: str = 'checkpoint_') -> PytreeType
+
+      Thin wrapper around flax's ``restore_checkpoint()`` function.
+
+
+   .. method:: summary_writer(self) -> flax.metrics.tensorboard.SummaryWriter
+
+      Property for accessing a summary writer for Tensorboard logging.
+
+
+   .. method:: log(self, log_data: fifteen.experiments.TensorboardLogData, step: int, log_scalars_every_n: int = 1, log_histograms_every_n: int = 1)
+
+      Logging helper for Tensorboard.
+
+      For TensorboardLogData instances returned from ``pmap``\ -transformed functions, see
+      ``TensorboardLogData.fix_sharded_scalars()``.
+
+
+   .. method:: assert_new(self) -> Experiment
+
+      Makes sure that there are no existing checkpoints, logs, or metadata. Returns
+      self.
+
+
+   .. method:: assert_exists(self) -> Experiment
+
+      Makes sure that there are existing checkpoints, logs, or metadata. Returns
+      self.
+
+
+   .. method:: clear(self) -> Experiment
+
+      Deletes ``self.data_dir``. This clears all checkpoints, logs, and metadata
+      inside of it. Returns self.
+
+
+   .. method:: move(self, new_data_dir: pathlib.Path) -> Experiment
+
+      Move all files corresponding to an experiment to a new location. Returns
+      updated Experiment object.
+
+
+

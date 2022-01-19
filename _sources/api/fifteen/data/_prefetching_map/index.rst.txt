@@ -1,0 +1,53 @@
+:orphan:
+
+:mod:`fifteen.data._prefetching_map`
+====================================
+
+.. py:module:: fifteen.data._prefetching_map
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data._prefetching_map.prefetching_map
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data._prefetching_map.PyTreeType
+
+
+.. data:: PyTreeType
+   
+
+   
+
+.. function:: prefetching_map(inputs: fifteen.data.SizedIterable[PyTreeType], device: Optional[jax.lib.xla_client.Device] = None, buffer_size: int = 2) -> fifteen.data.SizedIterable[PyTreeType]
+              prefetching_map(inputs: Iterable[PyTreeType], device: Optional[jax.lib.xla_client.Device] = None, buffer_size: int = 2) -> Iterable[PyTreeType]
+
+   Maps iterables over PyTrees to an identical iterable, but with a prefetching
+   buffer under the hood. Adapted from ``flax.jax_utils.prefetch_to_device()``.
+
+   This can improve parallelization for GPUs, particularly when memory is re-allocated
+   before freeing is finished. When the buffer size is set to 2, we make it explicit
+   that two sets of data should live in GPU memory at once: for a standard training
+   loop, this is typically both the "current" minibatch and the "next" one.
+
+   If a device is specified, we commit arrays (via ``jax.device_put()``\ ) before pushing them
+   onto the buffer. This should generally be set if the input iterable yields arrays
+   that are still living on the CPU.
+
+   For multi-device use cases, we can combine this function with
+   :meth:`fifteen.data.sharding_map()`.
+
+

@@ -1,0 +1,118 @@
+:orphan:
+
+:mod:`fifteen.data._dataloader`
+===============================
+
+.. py:module:: fifteen.data._dataloader
+
+.. autoapi-nested-parse::
+
+   Multiprocessed dataloader implementation.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data._dataloader.DataLoader
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data._dataloader.T
+   fifteen.data._dataloader.CollateFunction
+   fifteen.data._dataloader.PyTreeType
+
+
+.. data:: T
+   
+
+   
+
+.. data:: CollateFunction
+   
+
+   
+
+.. data:: PyTreeType
+   
+
+   
+
+.. class:: DataLoader
+
+   Bases: :py:obj:`Generic`\ [\ :py:obj:`PyTreeType`\ ], :py:obj:`fifteen.data.DataLoaderProtocol`\ [\ :py:obj:`PyTreeType`\ ]
+
+   .. autoapi-inheritance-diagram:: fifteen.data._dataloader.DataLoader
+      :parts: 1
+
+   Multiprocessed data loader, targeted at datasets that are too large to fit into
+   memory. Similar to PyTorch's data loader, but stateless.
+
+   Expects an arbitrary indexable dataset, which should implement ``__getitem__()`` and
+   ``__len__()``\ , and map integer indices to items as arrays or PyTrees.
+   :meth:`minibatches()` can then be used to construct an (optionally shuffled)
+   iterable over minibatches of stacked items.
+
+   .. attribute:: dataset
+      :annotation: :fifteen.data.MapDatasetProtocol[PyTreeType]
+
+      
+
+   .. attribute:: minibatch_size
+      :annotation: :int
+
+      
+
+   .. attribute:: num_workers
+      :annotation: :int = 0
+
+      Set to 0 to disable multiprocessing.
+
+
+   .. attribute:: drop_last
+      :annotation: :bool = True
+
+      Drop last minibatch if dataset is not evenly divisible.
+
+      It's usually nice to have minibatches that are the same size: it decreases the
+      amount of time (and memory) spent on JIT compilation in JAX and reduces concern of
+      noisy gradients from very small batch sizes.
+
+
+   .. attribute:: collate_fn
+      :annotation: :CollateFunction
+
+      Collate function. By default, we simply stack along ``axis=0``.
+
+
+   .. attribute:: workers_state
+      :annotation: :Optional[_WorkersState]
+
+      
+
+   .. method:: __post_init__(self)
+
+
+   .. method:: minibatch_count(self) -> int
+
+      Compute the number of minibatches per epoch.
+
+
+   .. method:: minibatches(self, shuffle_seed: Optional[int]) -> fifteen.data.SizedIterable[PyTreeType]
+
+      Returns an iterable over minibatches for our dataset. Optionally shuffled using
+      a random seed.
+
+
+

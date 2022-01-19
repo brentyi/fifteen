@@ -1,0 +1,5 @@
+<map id="inheritanceae4f6cc7c0" name="inheritanceae4f6cc7c0">
+<area shape="rect" id="node1" href="#fifteen.data.DataLoader" target="_top" title="Multiprocessed data loader, targeted at datasets that are too large to fit into" alt="" coords="327,31,424,56"/>
+<area shape="rect" id="node2" title="Abstract base class for generic types." alt="" coords="167,5,239,31"/>
+<area shape="rect" id="node3" href="#fifteen.data.DataLoaderProtocol" target="_top" title="Protocol for dataloaders, which are used to generate minibatches that can be" alt="" coords="128,55,279,80"/>
+</map>

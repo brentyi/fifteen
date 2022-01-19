@@ -1,0 +1,93 @@
+:orphan:
+
+:mod:`fifteen.experiments._log_data`
+====================================
+
+.. py:module:: fifteen.experiments._log_data
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.experiments._log_data.TensorboardLogData
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.experiments._log_data.T
+   fifteen.experiments._log_data.Array
+   fifteen.experiments._log_data.Scalar
+
+
+.. data:: T
+   
+
+   
+
+.. data:: Array
+   
+
+   
+
+.. data:: Scalar
+   
+
+   
+
+.. class:: TensorboardLogData
+
+   Data structure for logging to Tensorboard.
+
+   .. attribute:: scalars
+      :annotation: :Dict[str, Scalar]
+
+      
+
+   .. attribute:: histograms
+      :annotation: :Dict[str, Array]
+
+      
+
+   .. method:: prefix(self, prefix: str) -> TensorboardLogData
+
+      Add a prefix to all contained tag names. Useful for scoping, or creating
+      those folders in the Tensorboard scalar view.
+
+
+   .. method:: merge(self, other: TensorboardLogData) -> TensorboardLogData
+
+      Merge two log data structures.
+
+
+   .. method:: merge_scalars(self, scalars: Dict[str, Scalar] = {}) -> TensorboardLogData
+
+
+   .. method:: merge_histograms(self, histograms: Dict[str, Array] = {}) -> TensorboardLogData
+
+
+   .. method:: fix_sharded_scalars(self) -> TensorboardLogData
+
+      When log data is returned from a function transformed by ``pmap``\ , scalars will
+      often be returned as sharded arrays, distributed across multiple devices. This
+      makes them no longer scalars, and breaks compatibility with standard logging
+      utilities.
+
+      To fix this, we replace each sharded array in the scalar dictionary with the
+      first value from flattened representation. Histogram data is unmodified.
+
+      In the future, this might also support averaging across the scalars, but in the
+      meantime averaging can be accomplished in the pmapped function with
+      ``jax.lax.pmean``. Some performance analysis could be done here.
+
+
+
