@@ -5,8 +5,9 @@ import math
 from typing import Callable, Dict, Generic, List, Optional, TypeVar
 
 import jax
+
+import multiprocess as mp
 import numpy as onp
-from multiprocess import Process, Queue
 
 from ._protocols import DataLoaderProtocol, MapDatasetProtocol, SizedIterable
 
@@ -19,8 +20,8 @@ PyTreeType = TypeVar("PyTreeType")
 
 def _worker_loop(
     dataset: MapDatasetProtocol,
-    index_queue: Queue,
-    result_queue: Queue,
+    index_queue: mp.Queue,
+    result_queue: mp.Queue,
     collate_fn: CollateFunction,
 ) -> None:
     """Worker for dataloaders with multiprocessing."""
@@ -33,17 +34,19 @@ def _worker_loop(
 class _WorkersState:
     """Objects needed for managing and cleaning up after workers."""
 
-    workers: List[Process]
-    index_queue: Queue
-    result_queue: Queue
+    workers: List[mp.Process]
+    index_queue: mp.Queue
+    result_queue: mp.Queue
 
     def __del__(self):
         """Clean up workers."""
         self.index_queue.close()
         self.result_queue.close()
+
         for w in self.workers:
-            w.terminate()
-            w.join()
+            if w.is_alive():
+                w.terminate()
+                w.join()
             w.close()
 
 
@@ -79,17 +82,19 @@ class DataLoader(Generic[PyTreeType], DataLoaderProtocol[PyTreeType]):
 
     def __post_init__(self):
         # Create workers on instantiation.
+        ctx = mp.get_context("spawn")
+
         if self.num_workers == 0:
             object.__setattr__(self, "workers_state", None)
         else:
             # m = Manager()
-            index_queue = Queue()
-            result_queue = Queue(maxsize=self.num_workers)
+            index_queue = ctx.Queue()
+            result_queue = ctx.Queue(maxsize=self.num_workers)
 
             assert self.num_workers > 0
             workers = []
             for i in range(self.num_workers):
-                w = Process(
+                w = ctx.Process(
                     target=_worker_loop,
                     args=(
                         self.dataset,
