@@ -72,8 +72,10 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
 
 <span class="kn">import</span> <span class="nn">jax</span>
+
+<span class="c1"># from multiprocess import Process, Queue</span>
+<span class="kn">import</span> <span class="nn">multiprocess</span> <span class="k">as</span> <span class="nn">mp</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">onp</span>
-<span class="kn">from</span> <span class="nn">multiprocess</span> <span class="kn">import</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Queue</span>
 
 <span class="kn">from</span> <span class="nn">._protocols</span> <span class="kn">import</span> <span class="n">DataLoaderProtocol</span><span class="p">,</span> <span class="n">MapDatasetProtocol</span><span class="p">,</span> <span class="n">SizedIterable</span>
 
@@ -86,8 +88,8 @@
 
 <span class="k">def</span> <span class="nf">_worker_loop</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">:</span> <span class="n">MapDatasetProtocol</span><span class="p">,</span>
-    <span class="n">index_queue</span><span class="p">:</span> <span class="n">Queue</span><span class="p">,</span>
-    <span class="n">result_queue</span><span class="p">:</span> <span class="n">Queue</span><span class="p">,</span>
+    <span class="n">index_queue</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">,</span>
+    <span class="n">result_queue</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">,</span>
     <span class="n">collate_fn</span><span class="p">:</span> <span class="n">CollateFunction</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Worker for dataloaders with multiprocessing.&quot;&quot;&quot;</span>
@@ -100,17 +102,19 @@
 <span class="k">class</span> <span class="nc">_WorkersState</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Objects needed for managing and cleaning up after workers.&quot;&quot;&quot;</span>
 
-    <span class="n">workers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Process</span><span class="p">]</span>
-    <span class="n">index_queue</span><span class="p">:</span> <span class="n">Queue</span>
-    <span class="n">result_queue</span><span class="p">:</span> <span class="n">Queue</span>
+    <span class="n">workers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">mp</span><span class="o">.</span><span class="n">Process</span><span class="p">]</span>
+    <span class="n">index_queue</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span>
+    <span class="n">result_queue</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span>
 
     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clean up workers.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index_queue</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result_queue</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
         <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">:</span>
-            <span class="n">w</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
-            <span class="n">w</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
             <span class="n">w</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 
@@ -146,17 +150,19 @@
 
 <div class="viewcode-block" id="DataLoader.__post_init__"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._dataloader.DataLoader.__post_init__">[docs]</a>    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Create workers on instantiation.</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">get_context</span><span class="p">(</span><span class="s2">&quot;spawn&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;workers_state&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># m = Manager()</span>
-            <span class="n">index_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
-            <span class="n">result_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span><span class="p">)</span>
+            <span class="n">index_queue</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+            <span class="n">result_queue</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span><span class="p">)</span>
 
             <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span>
             <span class="n">workers</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span><span class="p">):</span>
-                <span class="n">w</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span>
                     <span class="n">target</span><span class="o">=</span><span class="n">_worker_loop</span><span class="p">,</span>
                     <span class="n">args</span><span class="o">=</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span>

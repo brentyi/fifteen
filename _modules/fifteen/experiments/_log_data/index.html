@@ -128,11 +128,12 @@
 <span class="sd">        utilities.</span>
 
 <span class="sd">        To fix this, we replace each sharded array in the scalar dictionary with the</span>
-<span class="sd">        first value from flattened representation. Histogram data is unmodified.</span>
+<span class="sd">        first value from the flattened representation. Histogram data is unmodified.</span>
 
-<span class="sd">        In the future, this might also support averaging across the scalars, but in the</span>
-<span class="sd">        meantime averaging can be accomplished in the pmapped function with</span>
-<span class="sd">        `jax.lax.pmean`. Some performance analysis could be done here.&quot;&quot;&quot;</span>
+<span class="sd">        In the future, this might also support averaging across the scalars, but since</span>
+<span class="sd">        an arithmetic mean doesn&#39;t make sense for many metrics the current approach is</span>
+<span class="sd">        to simply call `jax.lax.pmean` in the pmapped function. Some performance</span>
+<span class="sd">        analysis could be done here.&quot;&quot;&quot;</span>
 
         <span class="n">scalars</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Scalar</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

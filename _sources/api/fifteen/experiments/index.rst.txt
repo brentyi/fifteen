@@ -141,11 +141,12 @@ Classes
       utilities.
 
       To fix this, we replace each sharded array in the scalar dictionary with the
-      first value from flattened representation. Histogram data is unmodified.
+      first value from the flattened representation. Histogram data is unmodified.
 
-      In the future, this might also support averaging across the scalars, but in the
-      meantime averaging can be accomplished in the pmapped function with
-      ``jax.lax.pmean``. Some performance analysis could be done here.
+      In the future, this might also support averaging across the scalars, but since
+      an arithmetic mean doesn't make sense for many metrics the current approach is
+      to simply call ``jax.lax.pmean`` in the pmapped function. Some performance
+      analysis could be done here.
 
 
 
