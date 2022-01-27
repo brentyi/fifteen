@@ -126,7 +126,9 @@ class DataLoader(Generic[PyTreeType], DataLoaderProtocol[PyTreeType]):
             minibatch_count = math.ceil(minibatch_count)
         return minibatch_count
 
-    def minibatches(self, shuffle_seed: Optional[int]) -> SizedIterable[PyTreeType]:
+    def minibatches(
+        self, shuffle_seed: Optional[int] = None
+    ) -> SizedIterable[PyTreeType]:
         """Returns an iterable over minibatches for our dataset. Optionally shuffled using
         a random seed."""
 
