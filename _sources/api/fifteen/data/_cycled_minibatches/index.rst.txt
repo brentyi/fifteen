@@ -1,0 +1,45 @@
+:orphan:
+
+:mod:`fifteen.data._cycled_minibatches`
+=======================================
+
+.. py:module:: fifteen.data._cycled_minibatches
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data._cycled_minibatches.cycled_minibatches
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.data._cycled_minibatches.PyTreeType
+
+
+.. data:: PyTreeType
+   
+
+   
+
+.. function:: cycled_minibatches(dataloader: fifteen.data.DataLoaderProtocol[PyTreeType], shuffle_seed: Optional[int]) -> Iterator[PyTreeType]
+
+   Iterate over items in a dataloader infinitely. Abstracts away the concept of
+   'epochs', which are often logical for dataloaders to reason about, but can be a
+   misleading metric for training progress, particularly when datasets of different
+   sizes or data augmentation is involved.
+
+   Under the hood, shuffling is handled by incrementing the shuffle seed by 1 for each
+   (implicit) epoch.
+
+

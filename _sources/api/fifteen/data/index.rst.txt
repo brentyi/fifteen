@@ -25,9 +25,21 @@ Functions
 
 .. autoapisummary::
 
+   fifteen.data.cycled_minibatches
    fifteen.data.prefetching_map
    fifteen.data.sharding_map
 
+
+
+.. function:: cycled_minibatches(dataloader: fifteen.data.DataLoaderProtocol[PyTreeType], shuffle_seed: Optional[int]) -> Iterator[PyTreeType]
+
+   Iterate over items in a dataloader infinitely. Abstracts away the concept of
+   'epochs', which are often logical for dataloaders to reason about, but can be a
+   misleading metric for training progress, particularly when datasets of different
+   sizes or data augmentation is involved.
+
+   Under the hood, shuffling is handled by incrementing the shuffle seed by 1 for each
+   (implicit) epoch.
 
 
 .. class:: DataLoader
