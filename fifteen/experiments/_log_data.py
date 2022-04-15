@@ -73,6 +73,6 @@ class TensorboardLogData:
             assert isinstance(v, jax.lib.xla_extension.pmap_lib.ShardedDeviceArray)
 
             # We pull out the first value on the first device.
-            scalars[k] = v[tuple(0 for _ in range(len(v.shape)))]
+            scalars[k] = v[tuple(0 for _ in range(len(v.shape)))]  # type: ignore
 
         return TensorboardLogData(scalars=scalars, histograms=self.histograms)
