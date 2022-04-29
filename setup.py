@@ -15,7 +15,7 @@ setup(
     license="MIT",
     packages=find_packages(),
     package_data={"fifteen": ["py.typed"]},
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=[
         "dcargs",
         "flax",
@@ -29,7 +29,6 @@ setup(
         "multiprocess",
     ],
     classifiers=[
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",

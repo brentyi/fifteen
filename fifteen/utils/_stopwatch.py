@@ -40,5 +40,6 @@ def stopwatch(label: str = "block") -> Generator[None, None, None]:
     _stopwatch_nest_counter -= 1
 
     print_red(
-        f"Completed in {termcolor.colored(str(time.time() - start_time) + ' seconds', attrs=['bold'])}"
+        "Completed in"
+        f" {termcolor.colored(str(time.time() - start_time) + ' seconds', attrs=['bold'])}"
     )
