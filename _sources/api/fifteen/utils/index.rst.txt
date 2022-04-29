@@ -24,6 +24,7 @@ Functions
    fifteen.utils.get_git_commit_hash
    fifteen.utils.hcb_print
    fifteen.utils.loop_metric_generator
+   fifteen.utils.range_with_metrics
    fifteen.utils.pdb_safety_net
    fifteen.utils.stopwatch
    fifteen.utils.timestamp
@@ -81,6 +82,14 @@ Functions
       while True:
           time.sleep(1.0)
           print(next(loop_metrics).iterations_per_sec)
+
+
+.. function:: range_with_metrics(stop: int, /) -> Generator[LoopMetrics, None, None]
+              range_with_metrics(start: int, stop: int, /) -> Generator[LoopMetrics, None, None]
+              range_with_metrics(start: int, stop: int, step: int, /) -> Generator[LoopMetrics, None, None]
+
+   Light wrapper for ``fifteen.utils.loop_metric_generator()``\ , for use in place of
+   for ``range()``. Yields a LoopMetrics object instead of an integer.
 
 
 .. function:: pdb_safety_net()
