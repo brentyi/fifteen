@@ -33,7 +33,7 @@ Attributes
 
 .. autoapisummary::
 
-   fifteen.utils._loop_metrics.loop_metrics
+   fifteen.utils._loop_metrics.generator
 
 
 .. class:: LoopMetrics
@@ -54,9 +54,9 @@ Attributes
       
 
 
-.. function:: range_with_metrics(stop: int, /) -> Generator[LoopMetrics, None, None]
-              range_with_metrics(start: int, stop: int, /) -> Generator[LoopMetrics, None, None]
-              range_with_metrics(start: int, stop: int, step: int, /) -> Generator[LoopMetrics, None, None]
+.. function:: range_with_metrics(stop: int, /) -> fifteen.data.SizedIterable[LoopMetrics]
+              range_with_metrics(start: int, stop: int, /) -> fifteen.data.SizedIterable[LoopMetrics]
+              range_with_metrics(start: int, stop: int, step: int, /) -> fifteen.data.SizedIterable[LoopMetrics]
 
    Light wrapper for ``fifteen.utils.loop_metric_generator()``\ , for use in place of
    for ``range()``. Yields a LoopMetrics object instead of an integer.
@@ -87,7 +87,7 @@ Attributes
           print(next(loop_metrics).iterations_per_sec)
 
 
-.. data:: loop_metrics
+.. data:: generator
    
 
    

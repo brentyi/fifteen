@@ -67,7 +67,9 @@
   <h1>Source code for fifteen.utils._loop_metrics</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">dataclasses</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">overload</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">overload</span>
+
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">SizedIterable</span>
 
 
 <div class="viewcode-block" id="LoopMetrics"><a class="viewcode-back" href="../../../../api/fifteen/utils/#fifteen.utils._loop_metrics.LoopMetrics">[docs]</a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
@@ -78,29 +80,39 @@
 
 
 <span class="nd">@overload</span>
-<span class="k">def</span> <span class="nf">range_with_metrics</span><span class="p">(</span><span class="n">stop</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">LoopMetrics</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">range_with_metrics</span><span class="p">(</span><span class="n">stop</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">LoopMetrics</span><span class="p">]:</span>
     <span class="o">...</span>
 
 
 <span class="nd">@overload</span>
-<span class="k">def</span> <span class="nf">range_with_metrics</span><span class="p">(</span><span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">LoopMetrics</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">range_with_metrics</span><span class="p">(</span><span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">LoopMetrics</span><span class="p">]:</span>
     <span class="o">...</span>
 
 
 <span class="nd">@overload</span>
 <span class="k">def</span> <span class="nf">range_with_metrics</span><span class="p">(</span>
     <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">LoopMetrics</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">LoopMetrics</span><span class="p">]:</span>
     <span class="o">...</span>
 
 
-<div class="viewcode-block" id="range_with_metrics"><a class="viewcode-back" href="../../../../api/fifteen/utils/#fifteen.utils._loop_metrics.range_with_metrics">[docs]</a><span class="k">def</span> <span class="nf">range_with_metrics</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">LoopMetrics</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<div class="viewcode-block" id="range_with_metrics"><a class="viewcode-back" href="../../../../api/fifteen/utils/#fifteen.utils._loop_metrics.range_with_metrics">[docs]</a><span class="k">def</span> <span class="nf">range_with_metrics</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">LoopMetrics</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Light wrapper for `fifteen.utils.loop_metric_generator()`, for use in place of</span>
 <span class="sd">    for `range()`. Yields a LoopMetrics object instead of an integer.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_RangeWithMetrics</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span></div>
 
-    <span class="n">loop_metrics</span> <span class="o">=</span> <span class="n">loop_metric_generator</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">counter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">loop_metrics</span><span class="p">),</span> <span class="n">counter</span><span class="o">=</span><span class="n">counter</span><span class="p">)</span></div>
+
+<span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">_RangeWithMetrics</span><span class="p">:</span>
+    <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">loop_metrics</span> <span class="o">=</span> <span class="n">loop_metric_generator</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">counter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">loop_metrics</span><span class="p">),</span> <span class="n">counter</span><span class="o">=</span><span class="n">counter</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="loop_metric_generator"><a class="viewcode-back" href="../../../../api/fifteen/utils/#fifteen.utils._loop_metrics.loop_metric_generator">[docs]</a><span class="k">def</span> <span class="nf">loop_metric_generator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">LoopMetrics</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
@@ -144,11 +156,11 @@
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">loop_metrics</span><span class="p">)</span>
 
-    <span class="n">loop_metrics</span> <span class="o">=</span> <span class="n">loop_metric_generator</span><span class="p">()</span>
+    <span class="n">generator</span> <span class="o">=</span> <span class="n">loop_metric_generator</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">metrics</span> <span class="ow">in</span> <span class="n">loop_metric_generator</span><span class="p">():</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">loop_metrics</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">generator</span><span class="p">))</span>
 </pre></div>
 
            </div>

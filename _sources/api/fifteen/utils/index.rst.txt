@@ -84,9 +84,9 @@ Functions
           print(next(loop_metrics).iterations_per_sec)
 
 
-.. function:: range_with_metrics(stop: int, /) -> Generator[LoopMetrics, None, None]
-              range_with_metrics(start: int, stop: int, /) -> Generator[LoopMetrics, None, None]
-              range_with_metrics(start: int, stop: int, step: int, /) -> Generator[LoopMetrics, None, None]
+.. function:: range_with_metrics(stop: int, /) -> fifteen.data.SizedIterable[LoopMetrics]
+              range_with_metrics(start: int, stop: int, /) -> fifteen.data.SizedIterable[LoopMetrics]
+              range_with_metrics(start: int, stop: int, step: int, /) -> fifteen.data.SizedIterable[LoopMetrics]
 
    Light wrapper for ``fifteen.utils.loop_metric_generator()``\ , for use in place of
    for ``range()``. Yields a LoopMetrics object instead of an integer.
