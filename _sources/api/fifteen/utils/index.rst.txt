@@ -7,6 +7,14 @@
 Package Contents
 ----------------
 
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   fifteen.utils.LoopMetrics
+
+
 
 Functions
 ~~~~~~~~~
@@ -15,6 +23,7 @@ Functions
 
    fifteen.utils.get_git_commit_hash
    fifteen.utils.hcb_print
+   fifteen.utils.loop_metric_generator
    fifteen.utils.pdb_safety_net
    fifteen.utils.stopwatch
    fifteen.utils.timestamp
@@ -29,6 +38,49 @@ Functions
 .. function:: hcb_print(string_from_args: Callable[Ellipsis, str], *args: Any, **kwargs: Any) -> None
 
    Helper for printing via a host callback. JIT-friendly!
+
+
+.. class:: LoopMetrics
+
+   .. attribute:: counter
+      :annotation: :int
+
+      
+
+   .. attribute:: iterations_per_sec
+      :annotation: :float
+
+      
+
+   .. attribute:: time_elapsed
+      :annotation: :float
+
+      
+
+
+.. function:: loop_metric_generator() -> Generator[LoopMetrics, None, None]
+
+   Generator for computing loop metrics.
+
+   Note that the first ``iteration_per_sec`` metric will be 0.0.
+
+   Example usage:
+
+   .. code-block::
+
+      # Note that this is an infinite loop.
+      for metric in loop_metric_generator():
+          time.sleep(1.0)
+          print(metric)
+
+   or:
+
+   .. code-block::
+
+      loop_metrics = loop_metric_generator()
+      while True:
+          time.sleep(1.0)
+          print(next(loop_metrics).iterations_per_sec)
 
 
 .. function:: pdb_safety_net()
