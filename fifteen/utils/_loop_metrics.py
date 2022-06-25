@@ -31,7 +31,7 @@ def range_with_metrics(
 
 def range_with_metrics(*args: int) -> SizedIterable[LoopMetrics]:
     """Light wrapper for `fifteen.utils.loop_metric_generator()`, for use in place of
-    for `range()`. Yields a LoopMetrics object instead of an integer."""
+    `range()`. Yields a LoopMetrics object instead of an integer."""
     return _RangeWithMetrics(args=args)
 
 
@@ -72,7 +72,7 @@ def loop_metric_generator() -> Generator[LoopMetrics, None, None]:
 
     counter = 0
     time_start = time.time()
-    time_prev = time_start - 1e-8
+    time_prev = time_start
     while True:
         time_now = time.time()
         yield LoopMetrics(

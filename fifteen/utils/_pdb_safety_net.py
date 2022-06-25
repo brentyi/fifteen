@@ -4,7 +4,7 @@ import sys
 import traceback as tb
 
 
-def pdb_safety_net():
+def pdb_safety_net() -> None:
     """Attaches a "safety net" for unexpected errors in a Python script.
 
     When called, PDB will be automatically opened when either (a) the user hits Ctrl+C
