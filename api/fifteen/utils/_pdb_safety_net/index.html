@@ -15,6 +15,7 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
@@ -66,25 +67,25 @@
            <div itemprop="articleBody">
              
   <section id="module-fifteen.utils._pdb_safety_net">
-<span id="fifteen-utils-pdb-safety-net"></span><h1><a class="reference internal" href="#module-fifteen.utils._pdb_safety_net" title="fifteen.utils._pdb_safety_net"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.utils._pdb_safety_net</span></code></a><a class="headerlink" href="#module-fifteen.utils._pdb_safety_net" title="Permalink to this headline"></a></h1>
+<span id="fifteen-utils-pdb-safety-net"></span><h1><a class="reference internal" href="#module-fifteen.utils._pdb_safety_net" title="fifteen.utils._pdb_safety_net"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.utils._pdb_safety_net</span></code></a><a class="headerlink" href="#module-fifteen.utils._pdb_safety_net" title="Permalink to this heading"></a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.utils._pdb_safety_net.pdb_safety_net" title="fifteen.utils._pdb_safety_net.pdb_safety_net"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdb_safety_net</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.utils._pdb_safety_net.pdb_safety_net" title="fifteen.utils._pdb_safety_net.pdb_safety_net"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdb_safety_net</span></code></a>() → None</p></td>
 <td><p>Attaches a &quot;safety net&quot; for unexpected errors in a Python script.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="fifteen.utils._pdb_safety_net.pdb_safety_net">
-<span class="sig-prename descclassname"><span class="pre">fifteen.utils._pdb_safety_net.</span></span><span class="sig-name descname"><span class="pre">pdb_safety_net</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/fifteen/utils/_pdb_safety_net/#pdb_safety_net"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.utils._pdb_safety_net.pdb_safety_net" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fifteen.utils._pdb_safety_net.</span></span><span class="sig-name descname"><span class="pre">pdb_safety_net</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/fifteen/utils/_pdb_safety_net/#pdb_safety_net"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.utils._pdb_safety_net.pdb_safety_net" title="Permalink to this definition"></a></dt>
 <dd><p>Attaches a “safety net” for unexpected errors in a Python script.</p>
 <p>When called, PDB will be automatically opened when either (a) the user hits Ctrl+C
 or (b) we encounter an uncaught exception. Helpful for bypassing minor errors,

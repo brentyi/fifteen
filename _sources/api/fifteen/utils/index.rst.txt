@@ -89,10 +89,10 @@ Functions
               range_with_metrics(start: int, stop: int, step: int, /) -> fifteen.data.SizedIterable[LoopMetrics]
 
    Light wrapper for ``fifteen.utils.loop_metric_generator()``\ , for use in place of
-   for ``range()``. Yields a LoopMetrics object instead of an integer.
+   ``range()``. Yields a LoopMetrics object instead of an integer.
 
 
-.. function:: pdb_safety_net()
+.. function:: pdb_safety_net() -> None
 
    Attaches a "safety net" for unexpected errors in a Python script.
 

@@ -19,7 +19,7 @@ Functions
 
 
 
-.. function:: pdb_safety_net()
+.. function:: pdb_safety_net() -> None
 
    Attaches a "safety net" for unexpected errors in a Python script.
 

@@ -15,6 +15,7 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex/" />
@@ -73,11 +74,11 @@
            <div itemprop="articleBody">
              
   <section id="module-fifteen.utils">
-<span id="fifteen-utils"></span><h1><a class="reference internal" href="#module-fifteen.utils" title="fifteen.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.utils</span></code></a><a class="headerlink" href="#module-fifteen.utils" title="Permalink to this headline"></a></h1>
+<span id="fifteen-utils"></span><h1><a class="reference internal" href="#module-fifteen.utils" title="fifteen.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.utils</span></code></a><a class="headerlink" href="#module-fifteen.utils" title="Permalink to this heading"></a></h1>
 <section id="package-contents">
-<h2>Package Contents<a class="headerlink" href="#package-contents" title="Permalink to this headline"></a></h2>
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Permalink to this heading"></a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -91,7 +92,7 @@
 </table>
 </section>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -110,7 +111,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#fifteen.utils.range_with_metrics" title="fifteen.utils.range_with_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">range_with_metrics</span></code></a>(…)</p></td>
 <td><p>Light wrapper for <code class="docutils literal notranslate"><span class="pre">fifteen.utils.loop_metric_generator()</span></code>, for use in place of</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.utils.pdb_safety_net" title="fifteen.utils.pdb_safety_net"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdb_safety_net</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.utils.pdb_safety_net" title="fifteen.utils.pdb_safety_net"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdb_safety_net</span></code></a>() → None</p></td>
 <td><p>Attaches a &quot;safety net&quot; for unexpected errors in a Python script.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#fifteen.utils.stopwatch" title="fifteen.utils.stopwatch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stopwatch</span></code></a>(label: str = 'block') → Generator[None, None, None]</p></td>
@@ -182,12 +183,12 @@
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">fifteen.utils.</span></span><span class="sig-name descname"><span class="pre">range_with_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../data/#fifteen.data.SizedIterable" title="fifteen.data.SizedIterable"><span class="pre">fifteen.data.SizedIterable</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#fifteen.utils.LoopMetrics" title="fifteen.utils.LoopMetrics"><span class="pre">LoopMetrics</span></a><span class="p"><span class="pre">]</span></span></span></span></dt>
 <dd><p>Light wrapper for <code class="docutils literal notranslate"><span class="pre">fifteen.utils.loop_metric_generator()</span></code>, for use in place of
-for <code class="docutils literal notranslate"><span class="pre">range()</span></code>. Yields a LoopMetrics object instead of an integer.</p>
+<code class="docutils literal notranslate"><span class="pre">range()</span></code>. Yields a LoopMetrics object instead of an integer.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fifteen.utils.pdb_safety_net">
-<span class="sig-prename descclassname"><span class="pre">fifteen.utils.</span></span><span class="sig-name descname"><span class="pre">pdb_safety_net</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fifteen/utils/_pdb_safety_net/#pdb_safety_net"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.utils.pdb_safety_net" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fifteen.utils.</span></span><span class="sig-name descname"><span class="pre">pdb_safety_net</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/fifteen/utils/_pdb_safety_net/#pdb_safety_net"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.utils.pdb_safety_net" title="Permalink to this definition"></a></dt>
 <dd><p>Attaches a “safety net” for unexpected errors in a Python script.</p>
 <p>When called, PDB will be automatically opened when either (a) the user hits Ctrl+C
 or (b) we encounter an uncaught exception. Helpful for bypassing minor errors,
