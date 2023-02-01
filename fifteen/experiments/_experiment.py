@@ -6,7 +6,7 @@ import dataclasses
 import functools
 import pathlib
 import shutil
-from typing import Any, Optional, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Optional, Type, TypeVar
 
 import dcargs
 import flax.metrics.tensorboard
@@ -21,15 +21,19 @@ PytreeType = TypeVar("PytreeType")
 Pytree = Any
 
 
-try:
-    # Python >=3.8.
-    cached_property = functools.cached_property
-except AttributeError:
-    # Python <=3.7.
-    # Given the usage context it's very unlikely to matter practically, but note that
-    # this could lead to memory leaks.
-    def cached_property(method):  # type: ignore
-        return property(functools.lru_cache(maxsize=None)(method))
+if TYPE_CHECKING:
+    # @property is nicer for type checking.
+    cached_property = property
+else:
+    try:
+        # Python >=3.8.
+        cached_property = functools.cached_property
+    except AttributeError:
+        # Python <=3.7.
+        # Given the usage context it's very unlikely to matter practically, but note that
+        # this could lead to memory leaks.
+        def cached_property(method):  # type: ignore
+            return property(functools.lru_cache(maxsize=None)(method))
 
 
 def _get_origin(cls: Type) -> Type:
