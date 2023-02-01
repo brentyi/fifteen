@@ -9,8 +9,9 @@ import shutil
 from typing import TYPE_CHECKING, Any, Optional, Type, TypeVar
 
 import dcargs
-import flax.metrics.tensorboard
+import flax.serialization
 import flax.training.checkpoints
+import tensorboardX
 import yaml
 from typing_extensions import get_origin
 
@@ -51,7 +52,7 @@ class Experiment:
     directory to implement thin wrappers around:
     - `flax.training.checkpoints` for checkpointing.
     - `PyYAML` and `dcargs` for serializing metadata.
-    - `flax.metrics.tensorboard.SummaryWriter` for logging.
+    - `tensorboardX.SummaryWriter` for logging.
     """
 
     data_dir: pathlib.Path
@@ -139,9 +140,9 @@ class Experiment:
     #  Tensorboard logging helpers.
 
     @cached_property
-    def summary_writer(self) -> flax.metrics.tensorboard.SummaryWriter:
+    def summary_writer(self) -> tensorboardX.SummaryWriter:
         """Property for accessing a summary writer for Tensorboard logging."""
-        return flax.metrics.tensorboard.SummaryWriter(log_dir=str(self.data_dir))
+        return tensorboardX.SummaryWriter(log_dir=str(self.data_dir), flush_secs=30)
 
     def log(
         self,
@@ -164,11 +165,10 @@ class Experiment:
                         f"Got {shape=} instead of a scalar. For use with `jax.pmap`,"
                         "`log_data.fix_sharded_scalars()` may be helpful."
                     )
-                self.summary_writer.scalar(k, v, step=step)
+                self.summary_writer.add_scalar(k, v, global_step=step)
         if step % log_histograms_every_n == 0:
             for k, v in log_data.histograms.items():
-                self.summary_writer.histogram
-                self.summary_writer.histogram(k, v, step=step)
+                self.summary_writer.add_histogram(k, v, global_step=step)
 
     #  Helpers for common "experiment management" operations.
 
@@ -215,7 +215,7 @@ class Experiment:
         updated Experiment object."""
         new_experiment = Experiment(data_dir=new_data_dir, verbose=self.verbose)
 
-        def move(src: pathlib.Path, dst=pathlib.Path) -> None:
+        def move(src: pathlib.Path, dst: pathlib.Path) -> None:
             if not src.exists():
                 return
             self._print("Moving {src} to {dst}")
