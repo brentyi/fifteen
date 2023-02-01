@@ -16,11 +16,17 @@ Functions
 .. autoapisummary::
 
    fifteen.utils._git.get_git_commit_hash
+   fifteen.utils._git.get_git_diff
 
 
 
 .. function:: get_git_commit_hash(cwd: Optional[pathlib.Path] = None) -> str
 
    Returns the current Git commit hash.
+
+
+.. function:: get_git_diff(cwd: Optional[pathlib.Path] = None) -> str
+
+   Returns the output of ``git diff HEAD``.
 
 

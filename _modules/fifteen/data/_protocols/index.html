@@ -1,33 +1,71 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <title>fifteen.data._protocols &mdash; fifteen  documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/js/theme.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
+
+   
   <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+          
+
+          
             <a href="../../../../" class="icon icon-home"> fifteen
+          
+
+          
           </a>
+
+          
+            
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -35,36 +73,86 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
               <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/fifteen/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen</span></code></a></li>
 </ul>
 
+            
+          
         </div>
+        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../">fifteen</a>
+        
       </nav>
 
+
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
+    
       <li><a href="../../../../" class="icon icon-home"></a> &raquo;</li>
+        
           <li><a href="../../../">Module code</a> &raquo;</li>
+        
       <li>fifteen.data._protocols</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
+            
   <h1>Source code for fifteen.data._protocols</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Structural supertypes for working with datasets and dataloaders.&quot;&quot;&quot;</span>
 
@@ -76,7 +164,7 @@
 
 
 <div class="viewcode-block" id="SizedIterable"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._protocols.SizedIterable">[docs]</a><span class="k">class</span> <span class="nc">SizedIterable</span><span class="p">(</span><span class="n">Iterable</span><span class="p">[</span><span class="n">ContainedType</span><span class="p">],</span> <span class="n">Sized</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">[</span><span class="n">ContainedType</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;Protocol for objects that define both `__iter__()` and `__len__()` methods.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Protocol for objects that define both `__iter__()` and `__len__()` methods.</span>
 
 <span class="sd">    This is particularly useful for managing minibatches, which can be iterated over but</span>
 <span class="sd">    only in order due to multiprocessing/prefetching optimizations, and for which length</span>
@@ -84,7 +172,7 @@
 
 
 <div class="viewcode-block" id="MapDatasetProtocol"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._protocols.MapDatasetProtocol">[docs]</a><span class="k">class</span> <span class="nc">MapDatasetProtocol</span><span class="p">(</span><span class="n">Protocol</span><span class="p">[</span><span class="n">ContainedType</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;Protocol for defining PyTorch-style &quot;map&quot; datasets, which implement two methods:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Protocol for defining PyTorch-style &quot;map&quot; datasets, which implement two methods:</span>
 <span class="sd">    `__getitem__()` for loading single samples and `__len__()` for counting the total</span>
 <span class="sd">    number of samples.</span>
 
@@ -99,7 +187,7 @@
 
 
 <div class="viewcode-block" id="DataLoaderProtocol"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._protocols.DataLoaderProtocol">[docs]</a><span class="k">class</span> <span class="nc">DataLoaderProtocol</span><span class="p">(</span><span class="n">Protocol</span><span class="p">[</span><span class="n">ContainedType</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;Protocol for dataloaders, which are used to generate minibatches that can be</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Protocol for dataloaders, which are used to generate minibatches that can be</span>
 <span class="sd">    iterated over.&quot;&quot;&quot;</span>
 
     <span class="n">minibatch_size</span><span class="p">:</span> <span class="nb">int</span>
@@ -113,30 +201,46 @@
 </pre></div>
 
            </div>
+           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021.</p>
-  </div>
+    <p>
+        &#169; Copyright 2021.
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
         </div>
       </div>
+
     </section>
+
   </div>
-  <script>
+  
+
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

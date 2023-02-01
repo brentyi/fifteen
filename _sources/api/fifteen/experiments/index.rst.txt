@@ -65,6 +65,7 @@ Classes
 
 
    .. method:: summary_writer(self) -> flax.metrics.tensorboard.SummaryWriter
+      :property:
 
       Property for accessing a summary writer for Tensorboard logging.
 

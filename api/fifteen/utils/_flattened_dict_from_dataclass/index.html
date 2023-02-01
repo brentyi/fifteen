@@ -4,10 +4,11 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>fifteen.utils._pdb_safety_net &mdash; fifteen  documentation</title>
+  <title>fifteen.utils._flattened_dict_from_dataclass &mdash; fifteen  documentation</title>
   
 
   
@@ -87,7 +88,7 @@
             
               <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/fifteen/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen</span></code></a></li>
 </ul>
 
             
@@ -136,12 +137,14 @@
     
       <li><a href="../../../../" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="../../../">Module code</a> &raquo;</li>
-        
-      <li>fifteen.utils._pdb_safety_net</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.utils._flattened_dict_from_dataclass</span></code></li>
     
     
       <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/api/fifteen/utils/_flattened_dict_from_dataclass/index.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -153,36 +156,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for fifteen.utils._pdb_safety_net</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pdb</span>
-<span class="kn">import</span> <span class="nn">signal</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">traceback</span> <span class="k">as</span> <span class="nn">tb</span>
+  <section id="module-fifteen.utils._flattened_dict_from_dataclass">
+<span id="fifteen-utils-flattened-dict-from-dataclass"></span><h1><a class="reference internal" href="#module-fifteen.utils._flattened_dict_from_dataclass" title="fifteen.utils._flattened_dict_from_dataclass"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.utils._flattened_dict_from_dataclass</span></code></a><a class="headerlink" href="#module-fifteen.utils._flattened_dict_from_dataclass" title="Permalink to this heading">¶</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.utils._flattened_dict_from_dataclass.flattened_dict_from_dataclass" title="fifteen.utils._flattened_dict_from_dataclass.flattened_dict_from_dataclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flattened_dict_from_dataclass</span></code></a>(dataclass: Any) → Dict[str, Any]</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="fifteen.utils._flattened_dict_from_dataclass.flattened_dict_from_dataclass">
+<span class="sig-prename descclassname"><span class="pre">fifteen.utils._flattened_dict_from_dataclass.</span></span><span class="sig-name descname"><span class="pre">flattened_dict_from_dataclass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataclass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/fifteen/utils/_flattened_dict_from_dataclass/#flattened_dict_from_dataclass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.utils._flattened_dict_from_dataclass.flattened_dict_from_dataclass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
+</section>
+</section>
+</section>
 
-<div class="viewcode-block" id="pdb_safety_net"><a class="viewcode-back" href="../../../../api/fifteen/utils/#fifteen.utils._pdb_safety_net.pdb_safety_net">[docs]</a><span class="k">def</span> <span class="nf">pdb_safety_net</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attaches a &quot;safety net&quot; for unexpected errors in a Python script.</span>
-
-<span class="sd">    When called, PDB will be automatically opened when either (a) the user hits Ctrl+C</span>
-<span class="sd">    or (b) we encounter an uncaught exception. Helpful for bypassing minor errors,</span>
-<span class="sd">    diagnosing problems, and rescuing unsaved models.</span>
-
-<span class="sd">    Approximately emulates launching a script via</span>
-<span class="sd">    `python -m pdb -c continue script_name.py`.&quot;&quot;&quot;</span>
-
-    <span class="c1"># Open PDB on Ctrl+C</span>
-    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
-        <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
-
-    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
-
-    <span class="c1"># Open PDB when we encounter an uncaught exception</span>
-    <span class="k">def</span> <span class="nf">excepthook</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>  <span class="c1"># pragma: no cover (impossible to test)</span>
-        <span class="n">tb</span><span class="o">.</span><span class="n">print_exception</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-        <span class="n">pdb</span><span class="o">.</span><span class="n">post_mortem</span><span class="p">(</span><span class="n">traceback</span><span class="p">)</span>
-
-    <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span> <span class="o">=</span> <span class="n">excepthook</span></div>
-</pre></div>
 
            </div>
            

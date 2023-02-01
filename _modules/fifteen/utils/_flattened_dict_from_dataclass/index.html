@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>fifteen.utils._pdb_safety_net &mdash; fifteen  documentation</title>
+  <title>fifteen.utils._flattened_dict_from_dataclass &mdash; fifteen  documentation</title>
   
 
   
@@ -138,7 +138,7 @@
         
           <li><a href="../../../">Module code</a> &raquo;</li>
         
-      <li>fifteen.utils._pdb_safety_net</li>
+      <li>fifteen.utils._flattened_dict_from_dataclass</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -153,35 +153,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for fifteen.utils._pdb_safety_net</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pdb</span>
-<span class="kn">import</span> <span class="nn">signal</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">traceback</span> <span class="k">as</span> <span class="nn">tb</span>
+  <h1>Source code for fifteen.utils._flattened_dict_from_dataclass</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">dataclasses</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">get_type_hints</span>
 
 
-<div class="viewcode-block" id="pdb_safety_net"><a class="viewcode-back" href="../../../../api/fifteen/utils/#fifteen.utils._pdb_safety_net.pdb_safety_net">[docs]</a><span class="k">def</span> <span class="nf">pdb_safety_net</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attaches a &quot;safety net&quot; for unexpected errors in a Python script.</span>
+<div class="viewcode-block" id="flattened_dict_from_dataclass"><a class="viewcode-back" href="../../../../api/fifteen/utils/#fifteen.utils._flattened_dict_from_dataclass.flattened_dict_from_dataclass">[docs]</a><span class="k">def</span> <span class="nf">flattened_dict_from_dataclass</span><span class="p">(</span><span class="n">dataclass</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">assert</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">is_dataclass</span><span class="p">(</span><span class="n">dataclass</span><span class="p">)</span>
+    <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">dataclass</span><span class="p">)</span>
+    <span class="n">hints</span> <span class="o">=</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
 
-<span class="sd">    When called, PDB will be automatically opened when either (a) the user hits Ctrl+C</span>
-<span class="sd">    or (b) we encounter an uncaught exception. Helpful for bypassing minor errors,</span>
-<span class="sd">    diagnosing problems, and rescuing unsaved models.</span>
-
-<span class="sd">    Approximately emulates launching a script via</span>
-<span class="sd">    `python -m pdb -c continue script_name.py`.&quot;&quot;&quot;</span>
-
-    <span class="c1"># Open PDB on Ctrl+C</span>
-    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
-        <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
-
-    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
-
-    <span class="c1"># Open PDB when we encounter an uncaught exception</span>
-    <span class="k">def</span> <span class="nf">excepthook</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>  <span class="c1"># pragma: no cover (impossible to test)</span>
-        <span class="n">tb</span><span class="o">.</span><span class="n">print_exception</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-        <span class="n">pdb</span><span class="o">.</span><span class="n">post_mortem</span><span class="p">(</span><span class="n">traceback</span><span class="p">)</span>
-
-    <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span> <span class="o">=</span> <span class="n">excepthook</span></div>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">fields</span><span class="p">(</span><span class="n">dataclass</span><span class="p">):</span>
+        <span class="n">field_type</span> <span class="o">=</span> <span class="n">hints</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">is_dataclass</span><span class="p">(</span><span class="n">field_type</span><span class="p">):</span>
+            <span class="n">inner</span> <span class="o">=</span> <span class="n">flattened_dict_from_dataclass</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">inner</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">k</span><span class="p">]):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inner</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">output</span></div>
 </pre></div>
 
            </div>

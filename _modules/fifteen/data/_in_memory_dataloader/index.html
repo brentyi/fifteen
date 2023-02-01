@@ -1,33 +1,71 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <title>fifteen.data._in_memory_dataloader &mdash; fifteen  documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/js/theme.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
+
+   
   <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+          
+
+          
             <a href="../../../../" class="icon icon-home"> fifteen
+          
+
+          
           </a>
+
+          
+            
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -35,36 +73,86 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
               <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/fifteen/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen</span></code></a></li>
 </ul>
 
+            
+          
         </div>
+        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../">fifteen</a>
+        
       </nav>
 
+
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
+    
       <li><a href="../../../../" class="icon icon-home"></a> &raquo;</li>
+        
           <li><a href="../../../">Module code</a> &raquo;</li>
+        
       <li>fifteen.data._in_memory_dataloader</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
+            
   <h1>Source code for fifteen.data._in_memory_dataloader</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">dataclasses</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -80,7 +168,7 @@
 
 <div class="viewcode-block" id="InMemoryDataLoader"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._in_memory_dataloader.InMemoryDataLoader">[docs]</a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">InMemoryDataLoader</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span> <span class="n">DataLoaderProtocol</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;Simple data loader for in-memory datasets, stored as arrays within a PyTree</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple data loader for in-memory datasets, stored as arrays within a PyTree</span>
 <span class="sd">    structure.</span>
 
 <span class="sd">    The first axis of every array should correspond to the total sample count; each</span>
@@ -93,7 +181,7 @@
     <span class="n">minibatch_size</span><span class="p">:</span> <span class="nb">int</span>
 
     <span class="n">drop_last</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="sd">&quot;&quot;&quot;Drop last minibatch if dataset is not evenly divisible.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Drop last minibatch if dataset is not evenly divisible.</span>
 
 <span class="sd">    It&#39;s usually nice to have minibatches that are the same size: it decreases the</span>
 <span class="sd">    amount of time (and memory) spent on JIT compilation in JAX and reduces concern of</span>
@@ -113,7 +201,7 @@
         <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;sample_count&quot;</span><span class="p">,</span> <span class="n">sample_counts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="InMemoryDataLoader.minibatch_count"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._in_memory_dataloader.InMemoryDataLoader.minibatch_count">[docs]</a>    <span class="k">def</span> <span class="nf">minibatch_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Compute the number of minibatches per epoch.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the number of minibatches per epoch.&quot;&quot;&quot;</span>
 
         <span class="n">minibatch_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_count</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_size</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_last</span><span class="p">:</span>
@@ -124,7 +212,7 @@
 
     <span class="c1"># Note that a Sequence is a SizedIterable with support for index-based access.</span>
 <div class="viewcode-block" id="InMemoryDataLoader.minibatches"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._in_memory_dataloader.InMemoryDataLoader.minibatches">[docs]</a>    <span class="k">def</span> <span class="nf">minibatches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shuffle_seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Returns an iterable over minibatches for our dataset. Optionally shuffled using</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an iterable over minibatches for our dataset. Optionally shuffled using</span>
 <span class="sd">        a random seed.&quot;&quot;&quot;</span>
 
         <span class="n">indices</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_count</span><span class="p">)</span>
@@ -141,7 +229,7 @@
 
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">_Minibatches</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span> <span class="n">Generic</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;Iterable object for returning minibatches.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterable object for returning minibatches.&quot;&quot;&quot;</span>
 
     <span class="n">dataset</span><span class="p">:</span> <span class="n">PyTreeType</span>
     <span class="n">indices</span><span class="p">:</span> <span class="n">onp</span><span class="o">.</span><span class="n">ndarray</span>  <span class="c1"># Shape: (dataset length,)</span>
@@ -175,30 +263,46 @@
 </pre></div>
 
            </div>
+           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021.</p>
-  </div>
+    <p>
+        &#169; Copyright 2021.
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
         </div>
       </div>
+
     </section>
+
   </div>
-  <script>
+  
+
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
