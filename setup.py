@@ -23,7 +23,7 @@ setup(
         "jaxlib",
         "jax_dataclasses",
         "termcolor",
-        "tensorflow",  # Needed for Flax serialization/Tensorboard; primarily for `tensorflow.io.gfile`.
+        "tensorboardX",
         "types-termcolor",
         "typing_extensions",
         "multiprocess",
