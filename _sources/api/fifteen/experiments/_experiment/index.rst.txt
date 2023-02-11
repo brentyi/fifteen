@@ -68,7 +68,7 @@ Attributes
 
    * ``flax.training.checkpoints`` for checkpointing.
    * ``PyYAML`` and ``dcargs`` for serializing metadata.
-   * ``flax.metrics.tensorboard.SummaryWriter`` for logging.
+   * ``tensorboardX.SummaryWriter`` for logging.
 
    .. attribute:: data_dir
       :annotation: :pathlib.Path
@@ -103,7 +103,7 @@ Attributes
       Thin wrapper around flax's ``restore_checkpoint()`` function.
 
 
-   .. method:: summary_writer(self) -> flax.metrics.tensorboard.SummaryWriter
+   .. method:: summary_writer(self) -> tensorboardX.SummaryWriter
       :property:
 
       Property for accessing a summary writer for Tensorboard logging.
