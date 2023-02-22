@@ -225,7 +225,7 @@ Functions
    This is similar to collections.abc.Mapping, but does not require implementations of
    ``__contains__()``.
 
-   .. method:: __getitem__(self, index: int) -> ContainedType
+   .. method:: __getitem__(self, index: int, /) -> ContainedType
 
 
    .. method:: __len__(self) -> int
