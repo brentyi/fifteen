@@ -198,6 +198,7 @@ autoapi_options = [
 ]
 autoapi_add_toctree_entry = False
 
+
 # Generate name aliases
 def _gen_name_aliases():
     """Generate a name alias dictionary, which maps private names to ones in the public
@@ -333,6 +334,7 @@ def _override_function_documenter():
 
 
 _override_function_documenter()
+
 
 # Apply our inheritance alias to autoapi attribute annotations
 def _override_attribute_documenter():

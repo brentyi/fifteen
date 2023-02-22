@@ -23,7 +23,7 @@ class MapDatasetProtocol(Protocol[ContainedType]):
     This is similar to collections.abc.Mapping, but does not require implementations of
     `__contains__()`."""
 
-    def __getitem__(self, index: int) -> ContainedType:
+    def __getitem__(self, index: int, /) -> ContainedType:
         ...
 
     def __len__(self) -> int:
