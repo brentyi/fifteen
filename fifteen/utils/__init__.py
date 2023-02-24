@@ -1,4 +1,5 @@
-from ._flattened_dict_from_dataclass import (
+from ._dataclass_utils import diff_dict_from_dataclasses as diff_dict_from_dataclasses
+from ._dataclass_utils import (
     flattened_dict_from_dataclass as flattened_dict_from_dataclass,
 )
 from ._git import get_git_commit_hash as get_git_commit_hash

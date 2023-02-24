@@ -35,7 +35,6 @@ class DataLoaderProtocol(Protocol[ContainedType]):
     iterated over."""
 
     minibatch_size: int
-    drop_last: bool
 
     def minibatch_count(self) -> int:
         ...
