@@ -89,11 +89,6 @@ Attributes
 
       
 
-   .. attribute:: drop_last
-      :annotation: :bool
-
-      
-
    .. method:: minibatch_count(self) -> int
 
 

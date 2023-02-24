@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>fifteen.utils._flattened_dict_from_dataclass &mdash; fifteen  documentation</title>
+  <title>fifteen.utils._dataclass_utils &mdash; fifteen  documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
@@ -59,7 +59,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
-      <li class="breadcrumb-item active">fifteen.utils._flattened_dict_from_dataclass</li>
+      <li class="breadcrumb-item active">fifteen.utils._dataclass_utils</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -68,14 +68,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for fifteen.utils._flattened_dict_from_dataclass</h1><div class="highlight"><pre>
+  <h1>Source code for fifteen.utils._dataclass_utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">dataclasses</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">TypeVar</span>
 
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">get_type_hints</span>
 
 
-<div class="viewcode-block" id="flattened_dict_from_dataclass"><a class="viewcode-back" href="../../../../api/fifteen/utils/#fifteen.utils._flattened_dict_from_dataclass.flattened_dict_from_dataclass">[docs]</a><span class="k">def</span> <span class="nf">flattened_dict_from_dataclass</span><span class="p">(</span><span class="n">dataclass</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="flattened_dict_from_dataclass"><a class="viewcode-back" href="../../../../api/fifteen/utils/#fifteen.utils._dataclass_utils.flattened_dict_from_dataclass">[docs]</a><span class="k">def</span> <span class="nf">flattened_dict_from_dataclass</span><span class="p">(</span><span class="n">dataclass</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
     <span class="k">assert</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">is_dataclass</span><span class="p">(</span><span class="n">dataclass</span><span class="p">)</span>
     <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">dataclass</span><span class="p">)</span>
     <span class="n">hints</span> <span class="o">=</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
@@ -91,6 +91,25 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">output</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
     <span class="k">return</span> <span class="n">output</span></div>
+
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="diff_dict_from_dataclasses"><a class="viewcode-back" href="../../../../api/fifteen/utils/#fifteen.utils._dataclass_utils.diff_dict_from_dataclasses">[docs]</a><span class="k">def</span> <span class="nf">diff_dict_from_dataclasses</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">assert</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">is_dataclass</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">is_dataclass</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+
+    <span class="n">base_dict</span> <span class="o">=</span> <span class="n">flattened_dict_from_dataclass</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+    <span class="n">target_dict</span> <span class="o">=</span> <span class="n">flattened_dict_from_dataclass</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">target_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">target_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="n">base_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+            <span class="k">continue</span>
+        <span class="n">diff</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">diff</span></div>
 </pre></div>
 
            </div>
