@@ -12,7 +12,8 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/sphinx_highlight.js"></script>
@@ -102,7 +103,7 @@ run of a training script are co-located.</p>
 directory to implement thin wrappers around:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">flax.training.checkpoints</span></code> for checkpointing.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PyYAML</span></code> and <code class="docutils literal notranslate"><span class="pre">dcargs</span></code> for serializing metadata.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PyYAML</span></code> and <code class="docutils literal notranslate"><span class="pre">tyro</span></code> for serializing metadata.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tensorboardX.SummaryWriter</span></code> for logging.</p></li>
 </ul>
 <dl class="py attribute">
@@ -119,14 +120,14 @@ directory to implement thin wrappers around:</p>
 <dt class="sig sig-object py" id="fifteen.experiments.Experiment.write_metadata">
 <span class="sig-name descname"><span class="pre">write_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/fifteen/experiments/_experiment/#Experiment.write_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.experiments.Experiment.write_metadata" title="Permalink to this definition"></a></dt>
 <dd><p>Serialize an object as a yaml file, then save it to the experiment’s metadata
-directory. Includes special handling for dataclasses (via dcargs).</p>
+directory. Includes special handling for dataclasses (via tyro).</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="fifteen.experiments.Experiment.read_metadata">
 <span class="sig-name descname"><span class="pre">read_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="reference internal" href="../../../_modules/fifteen/experiments/_experiment/#Experiment.read_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.experiments.Experiment.read_metadata" title="Permalink to this definition"></a></dt>
 <dd><p>Load an object from the experiment’s metadata directory. Includes special
-handling for dataclasses (via dcargs).</p>
+handling for dataclasses (via tyro).</p>
 </dd></dl>
 
 <dl class="py method">
