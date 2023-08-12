@@ -8,10 +8,10 @@ import pathlib
 import shutil
 from typing import TYPE_CHECKING, Any, Optional, Type, TypeVar
 
-import dcargs
 import flax.serialization
 import flax.training.checkpoints
 import tensorboardX
+import tyro
 import yaml
 from typing_extensions import get_origin
 
@@ -51,7 +51,7 @@ class Experiment:
     There's very little real code here; instead we use a common experiment data
     directory to implement thin wrappers around:
     - `flax.training.checkpoints` for checkpointing.
-    - `PyYAML` and `dcargs` for serializing metadata.
+    - `PyYAML` and `tyro` for serializing metadata.
     - `tensorboardX.SummaryWriter` for logging.
     """
 
@@ -62,7 +62,7 @@ class Experiment:
 
     def write_metadata(self, name: str, object: Any) -> None:
         """Serialize an object as a yaml file, then save it to the experiment's metadata
-        directory. Includes special handling for dataclasses (via dcargs)."""
+        directory. Includes special handling for dataclasses (via tyro)."""
         self._mkdir_if_needed(self.data_dir)
         assert not name.endswith(".yaml")
 
@@ -70,20 +70,20 @@ class Experiment:
         self._print("Writing metadata to", path)
         with open(path, "w") as file:
             file.write(
-                dcargs.to_yaml(object)
+                tyro.extras.to_yaml(object)
                 if dataclasses.is_dataclass(object)
                 else yaml.dump(object)
             )
 
     def read_metadata(self, name: str, expected_type: Type[T]) -> T:
         """Load an object from the experiment's metadata directory. Includes special
-        handling for dataclasses (via dcargs)."""
+        handling for dataclasses (via tyro)."""
         path = self.data_dir / (name + ".yaml")
 
         self._print("Reading metadata from", path)
         with open(path, "r") as file:
             output = (
-                dcargs.from_yaml(expected_type, file.read())
+                tyro.extras.from_yaml(expected_type, file.read())
                 if dataclasses.is_dataclass(_get_origin(expected_type))
                 else yaml.load(
                     file.read(),
