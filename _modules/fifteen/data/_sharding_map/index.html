@@ -11,11 +11,10 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
@@ -70,37 +69,34 @@
            <div itemprop="articleBody">
              
   <h1>Source code for fifteen.data._sharding_map</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">dataclasses</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">overload</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">overload</span>
 
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">jnp</span>
-<span class="kn">from</span> <span class="nn">jax.lib</span> <span class="kn">import</span> <span class="n">xla_client</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">jnp</span>
 
-<span class="kn">from</span> <span class="nn">._protocols</span> <span class="kn">import</span> <span class="n">SizedIterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._protocols</span><span class="w"> </span><span class="kn">import</span> <span class="n">SizedIterable</span>
 
 <span class="n">PyTreeType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;PyTreeType&quot;</span><span class="p">)</span>
 
 
 <span class="nd">@overload</span>
-<span class="k">def</span> <span class="nf">sharding_map</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sharding_map</span><span class="p">(</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span>
-    <span class="n">devices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">xla_client</span><span class="o">.</span><span class="n">Device</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]:</span>
-    <span class="o">...</span>
+    <span class="n">devices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">jax</span><span class="o">.</span><span class="n">Device</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]:</span> <span class="o">...</span>
 
 
 <span class="nd">@overload</span>
-<span class="k">def</span> <span class="nf">sharding_map</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sharding_map</span><span class="p">(</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span>
-    <span class="n">devices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">xla_client</span><span class="o">.</span><span class="n">Device</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]:</span>
-    <span class="o">...</span>
+    <span class="n">devices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">jax</span><span class="o">.</span><span class="n">Device</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]:</span> <span class="o">...</span>
 
 
-<div class="viewcode-block" id="sharding_map"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._sharding_map.sharding_map">[docs]</a><span class="k">def</span> <span class="nf">sharding_map</span><span class="p">(</span>
+<div class="viewcode-block" id="sharding_map"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._sharding_map.sharding_map">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">sharding_map</span><span class="p">(</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]],</span>
-    <span class="n">devices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">xla_client</span><span class="o">.</span><span class="n">Device</span><span class="p">],</span>
+    <span class="n">devices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">jax</span><span class="o">.</span><span class="n">Device</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps iterables over PyTrees to iterables over sharded PyTrees, which are</span>
 <span class="sd">    distributed on multiple devices.</span>
@@ -116,14 +112,14 @@
 
 
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
-<span class="k">class</span> <span class="nc">_ShardingMap</span><span class="p">(</span><span class="n">Iterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_ShardingMap</span><span class="p">(</span><span class="n">Iterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]):</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]</span>
-    <span class="n">devices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">xla_client</span><span class="o">.</span><span class="n">Device</span><span class="p">]</span>
+    <span class="n">devices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">jax</span><span class="o">.</span><span class="n">Device</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">device_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">shard</span><span class="p">(</span><span class="n">leaf</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">shard</span><span class="p">(</span><span class="n">leaf</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="n">leaf</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="n">device_count</span> <span class="o">==</span> <span class="mi">0</span>
             <span class="p">),</span> <span class="s2">&quot;Batch size must be divisible by device count.&quot;</span>
@@ -133,14 +129,14 @@
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_put_sharded</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">leaf</span><span class="p">),</span> <span class="n">devices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pytree</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="n">shard</span><span class="p">,</span> <span class="n">pytree</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pytree</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">shard</span><span class="p">,</span> <span class="n">pytree</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">))</span>
 
 
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
-<span class="k">class</span> <span class="nc">_ShardingMapSized</span><span class="p">(</span><span class="n">_ShardingMap</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_ShardingMapSized</span><span class="p">(</span><span class="n">_ShardingMap</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]):</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
 </pre></div>
 

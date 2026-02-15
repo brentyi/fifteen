@@ -32,8 +32,8 @@ Attributes
 
    
 
-.. function:: sharding_map(inputs: fifteen.data.SizedIterable[PyTreeType], devices: Sequence[jax.lib.xla_client.Device]) -> fifteen.data.SizedIterable[PyTreeType]
-              sharding_map(inputs: Iterable[PyTreeType], devices: Sequence[jax.lib.xla_client.Device]) -> Iterable[PyTreeType]
+.. function:: sharding_map(inputs: fifteen.data.SizedIterable[PyTreeType], devices: Sequence[jax.Device]) -> fifteen.data.SizedIterable[PyTreeType]
+              sharding_map(inputs: Iterable[PyTreeType], devices: Sequence[jax.Device]) -> Iterable[PyTreeType]
 
    Maps iterables over PyTrees to iterables over sharded PyTrees, which are
    distributed on multiple devices.

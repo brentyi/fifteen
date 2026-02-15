@@ -11,11 +11,10 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
@@ -70,12 +69,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for fifteen.experiments._log_data</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax_dataclasses</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">onp</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">jnp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax_dataclasses</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">overload</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
 <span class="n">Array</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">onp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
@@ -83,17 +83,17 @@
 
 
 <div class="viewcode-block" id="TensorboardLogData"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData">[docs]</a><span class="nd">@jax_dataclasses</span><span class="o">.</span><span class="n">pytree_dataclass</span>
-<span class="k">class</span> <span class="nc">TensorboardLogData</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TensorboardLogData</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Data structure for logging to Tensorboard.&quot;&quot;&quot;</span>
 
     <span class="n">scalars</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Scalar</span><span class="p">]</span> <span class="o">=</span> <span class="n">jax_dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
     <span class="n">histograms</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Array</span><span class="p">]</span> <span class="o">=</span> <span class="n">jax_dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TensorboardLogData.prefix"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData.prefix">[docs]</a>    <span class="k">def</span> <span class="nf">prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TensorboardLogData&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="TensorboardLogData.prefix"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData.prefix">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TensorboardLogData&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a prefix to all contained tag names. Useful for scoping, or creating</span>
 <span class="sd">        those folders in the Tensorboard scalar view.&quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">_prefix</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_prefix</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
         <span class="k">return</span> <span class="n">TensorboardLogData</span><span class="p">(</span>
@@ -101,14 +101,14 @@
             <span class="n">histograms</span><span class="o">=</span><span class="n">_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">histograms</span><span class="p">),</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="TensorboardLogData.merge"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData.merge">[docs]</a>    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;TensorboardLogData&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TensorboardLogData&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="TensorboardLogData.merge"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData.merge">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;TensorboardLogData&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TensorboardLogData&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Merge two log data structures.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">TensorboardLogData</span><span class="p">(</span>
             <span class="n">scalars</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">scalars</span><span class="p">,</span> <span class="o">**</span><span class="n">other</span><span class="o">.</span><span class="n">scalars</span><span class="p">),</span>
             <span class="n">histograms</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">histograms</span><span class="p">,</span> <span class="o">**</span><span class="n">other</span><span class="o">.</span><span class="n">histograms</span><span class="p">),</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="TensorboardLogData.merge_scalars"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData.merge_scalars">[docs]</a>    <span class="k">def</span> <span class="nf">merge_scalars</span><span class="p">(</span>
+<div class="viewcode-block" id="TensorboardLogData.merge_scalars"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData.merge_scalars">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">merge_scalars</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">scalars</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Scalar</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TensorboardLogData&quot;</span><span class="p">:</span>
@@ -117,7 +117,7 @@
             <span class="n">histograms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">histograms</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="TensorboardLogData.merge_histograms"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData.merge_histograms">[docs]</a>    <span class="k">def</span> <span class="nf">merge_histograms</span><span class="p">(</span>
+<div class="viewcode-block" id="TensorboardLogData.merge_histograms"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData.merge_histograms">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">merge_histograms</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">histograms</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Array</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TensorboardLogData&quot;</span><span class="p">:</span>
@@ -126,7 +126,7 @@
             <span class="n">histograms</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">histograms</span><span class="p">,</span> <span class="o">**</span><span class="n">histograms</span><span class="p">),</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="TensorboardLogData.fix_sharded_scalars"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData.fix_sharded_scalars">[docs]</a>    <span class="k">def</span> <span class="nf">fix_sharded_scalars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TensorboardLogData&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="TensorboardLogData.fix_sharded_scalars"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._log_data.TensorboardLogData.fix_sharded_scalars">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">fix_sharded_scalars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TensorboardLogData&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;When log data is returned from a function transformed by `pmap`, scalars will</span>
 <span class="sd">        often be returned as sharded arrays, distributed across multiple devices. This</span>
 <span class="sd">        makes them no longer scalars, and breaks compatibility with standard logging</span>
@@ -142,8 +142,6 @@
 
         <span class="n">scalars</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Scalar</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">jax</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">xla_extension</span><span class="o">.</span><span class="n">pmap_lib</span><span class="o">.</span><span class="n">ShardedDeviceArray</span><span class="p">)</span>
-
             <span class="c1"># We pull out the first value on the first device.</span>
             <span class="n">scalars</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)))]</span>  <span class="c1"># type: ignore</span>
 

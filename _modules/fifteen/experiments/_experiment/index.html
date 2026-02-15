@@ -11,11 +11,10 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
@@ -74,20 +73,21 @@
 
 <span class="sd">Source: https://github.com/brentyi/dfgo/blob/master/lib/experiment_files.py</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">dataclasses</span>
-<span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">TypeVar</span>
 
-<span class="kn">import</span> <span class="nn">flax.serialization</span>
-<span class="kn">import</span> <span class="nn">flax.training.checkpoints</span>
-<span class="kn">import</span> <span class="nn">tensorboardX</span>
-<span class="kn">import</span> <span class="nn">tyro</span>
-<span class="kn">import</span> <span class="nn">yaml</span>
-<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">get_origin</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">TypeVar</span>
 
-<span class="kn">from</span> <span class="nn">._log_data</span> <span class="kn">import</span> <span class="n">TensorboardLogData</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">flax.serialization</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">flax.training.checkpoints</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorboardX</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tyro</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_origin</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">._log_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorboardLogData</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
 <span class="n">PytreeType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;PytreeType&quot;</span><span class="p">)</span>
@@ -105,18 +105,18 @@
         <span class="c1"># Python &lt;=3.7.</span>
         <span class="c1"># Given the usage context it&#39;s very unlikely to matter practically, but note that</span>
         <span class="c1"># this could lead to memory leaks.</span>
-        <span class="k">def</span> <span class="nf">cached_property</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">cached_property</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
             <span class="k">return</span> <span class="nb">property</span><span class="p">(</span><span class="n">functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)(</span><span class="n">method</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">_get_origin</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_origin</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get origin type; helpful for unwrapping generics, etc.&quot;&quot;&quot;</span>
     <span class="n">origin</span> <span class="o">=</span> <span class="n">get_origin</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">cls</span> <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">origin</span>
 
 
 <div class="viewcode-block" id="Experiment"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment">[docs]</a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Experiment</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Experiment</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;We define an &quot;experiment&quot; as a simple directory, where files associated with some</span>
 <span class="sd">    run of a training script are co-located.</span>
 
@@ -132,7 +132,7 @@
 
     <span class="c1">#  YAML-based metadata utilities.</span>
 
-<div class="viewcode-block" id="Experiment.write_metadata"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.write_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">write_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Experiment.write_metadata"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.write_metadata">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">write_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialize an object as a yaml file, then save it to the experiment&#39;s metadata</span>
 <span class="sd">        directory. Includes special handling for dataclasses (via tyro).&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mkdir_if_needed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
@@ -147,7 +147,7 @@
                 <span class="k">else</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Experiment.read_metadata"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.read_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">read_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expected_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<div class="viewcode-block" id="Experiment.read_metadata"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.read_metadata">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">read_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expected_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load an object from the experiment&#39;s metadata directory. Includes special</span>
 <span class="sd">        handling for dataclasses (via tyro).&quot;&quot;&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">/</span> <span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">)</span>
@@ -167,7 +167,7 @@
 
     <span class="c1">#  Checkpointing helpers.</span>
 
-<div class="viewcode-block" id="Experiment.save_checkpoint"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.save_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span>
+<div class="viewcode-block" id="Experiment.save_checkpoint"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.save_checkpoint">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">save_checkpoint</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">target</span><span class="p">:</span> <span class="n">Pytree</span><span class="p">,</span>
         <span class="n">step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -191,32 +191,28 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot;Saved checkpoint to&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">filename</span></div>
 
-<div class="viewcode-block" id="Experiment.restore_checkpoint"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.restore_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">restore_checkpoint</span><span class="p">(</span>
+<div class="viewcode-block" id="Experiment.restore_checkpoint"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.restore_checkpoint">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">restore_checkpoint</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">target</span><span class="p">:</span> <span class="n">PytreeType</span><span class="p">,</span>
         <span class="n">step</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;checkpoint_&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PytreeType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Thin wrapper around flax&#39;s `restore_checkpoint()` function.&quot;&quot;&quot;</span>
-        <span class="n">state_dict</span> <span class="o">=</span> <span class="n">flax</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">checkpoints</span><span class="o">.</span><span class="n">restore_checkpoint</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">flax</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">checkpoints</span><span class="o">.</span><span class="n">restore_checkpoint</span><span class="p">(</span>
             <span class="n">ckpt_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">),</span>
-            <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Allows us to raise an error if no checkpoint was found.</span>
+            <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
             <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span>
             <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">state_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;No checkpoint found!&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot;Successfully loaded checkpoint!&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">flax</span><span class="o">.</span><span class="n">serialization</span><span class="o">.</span><span class="n">from_state_dict</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">)</span></div>
+        <span class="p">)</span></div>
 
     <span class="c1">#  Tensorboard logging helpers.</span>
 
     <span class="nd">@cached_property</span>
-    <span class="k">def</span> <span class="nf">summary_writer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensorboardX</span><span class="o">.</span><span class="n">SummaryWriter</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">summary_writer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensorboardX</span><span class="o">.</span><span class="n">SummaryWriter</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Property for accessing a summary writer for Tensorboard logging.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">tensorboardX</span><span class="o">.</span><span class="n">SummaryWriter</span><span class="p">(</span><span class="n">log_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">),</span> <span class="n">flush_secs</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Experiment.log"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span>
+<div class="viewcode-block" id="Experiment.log"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.log">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">log_data</span><span class="p">:</span> <span class="n">TensorboardLogData</span><span class="p">,</span>
         <span class="n">step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -244,14 +240,14 @@
 
     <span class="c1">#  Helpers for common &quot;experiment management&quot; operations.</span>
 
-<div class="viewcode-block" id="Experiment.assert_new"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.assert_new">[docs]</a>    <span class="k">def</span> <span class="nf">assert_new</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Experiment&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="Experiment.assert_new"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.assert_new">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">assert_new</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Experiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes sure that there are no existing checkpoints, logs, or metadata. Returns</span>
 <span class="sd">        self.&quot;&quot;&quot;</span>
 
         <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="Experiment.assert_exists"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.assert_exists">[docs]</a>    <span class="k">def</span> <span class="nf">assert_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Experiment&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="Experiment.assert_exists"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.assert_exists">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">assert_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Experiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes sure that there are existing checkpoints, logs, or metadata. Returns</span>
 <span class="sd">        self.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
@@ -259,15 +255,15 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="Experiment.clear"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Experiment&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="Experiment.clear"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.clear">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Experiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Deletes `self.data_dir`. This clears all checkpoints, logs, and metadata</span>
 <span class="sd">        inside of it. Returns self.&quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">error_cb</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc_info</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">error_cb</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc_info</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Error callback for shutil.rmtree.&quot;&quot;&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error deleting </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">rm_recursive</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">rm_recursive</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Deletes a path, as well as up to `n` empty parent directories.&quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
                 <span class="k">return</span>
@@ -282,12 +278,12 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="Experiment.move"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data_dir</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Experiment&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="Experiment.move"><a class="viewcode-back" href="../../../../api/fifteen/experiments/#fifteen.experiments._experiment.Experiment.move">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data_dir</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Experiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Move all files corresponding to an experiment to a new location. Returns</span>
 <span class="sd">        updated Experiment object.&quot;&quot;&quot;</span>
         <span class="n">new_experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="n">new_data_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">dst</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">move</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">dst</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">src</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
                 <span class="k">return</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot;Moving </span><span class="si">{src}</span><span class="s2"> to </span><span class="si">{dst}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -299,12 +295,12 @@
 
     <span class="c1"># Private helpers.</span>
 
-    <span class="k">def</span> <span class="nf">_mkdir_if_needed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_mkdir_if_needed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Made directory at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prefixed printing helper. No-op if `verbose` is set to `False`.&quot;&quot;&quot;</span>
         <span class="c1"># TODO: re-consider the overhead/flexibility tradeoff of a proper logging setup.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>

@@ -120,7 +120,7 @@ Functions
    structure.
 
    The first axis of every array should correspond to the total sample count; each
-   sample will therefore be indexable via ``jax.tree_map(lambda x: x[i, ...], dataset)``.
+   sample will therefore be indexable via ``jax.tree.map(lambda x: x[i, ...], dataset)``.
 
    :meth:`minibatches()` can then be used to construct an (optionally shuffled)
    sequence of minibatches.
@@ -165,8 +165,8 @@ Functions
 
 
 
-.. function:: prefetching_map(inputs: fifteen.data.SizedIterable[PyTreeType], device: Optional[jax.lib.xla_client.Device] = None, buffer_size: int = 2) -> fifteen.data.SizedIterable[PyTreeType]
-              prefetching_map(inputs: Iterable[PyTreeType], device: Optional[jax.lib.xla_client.Device] = None, buffer_size: int = 2) -> Iterable[PyTreeType]
+.. function:: prefetching_map(inputs: fifteen.data.SizedIterable[PyTreeType], device: Optional[jax.Device] = None, buffer_size: int = 2) -> fifteen.data.SizedIterable[PyTreeType]
+              prefetching_map(inputs: Iterable[PyTreeType], device: Optional[jax.Device] = None, buffer_size: int = 2) -> Iterable[PyTreeType]
 
    Maps iterables over PyTrees to an identical iterable, but with a prefetching
    buffer under the hood. Adapted from ``flax.jax_utils.prefetch_to_device()``.
@@ -241,8 +241,8 @@ Functions
    evaluation is useful for tools like ``tqdm``.
 
 
-.. function:: sharding_map(inputs: fifteen.data.SizedIterable[PyTreeType], devices: Sequence[jax.lib.xla_client.Device]) -> fifteen.data.SizedIterable[PyTreeType]
-              sharding_map(inputs: Iterable[PyTreeType], devices: Sequence[jax.lib.xla_client.Device]) -> Iterable[PyTreeType]
+.. function:: sharding_map(inputs: fifteen.data.SizedIterable[PyTreeType], devices: Sequence[jax.Device]) -> fifteen.data.SizedIterable[PyTreeType]
+              sharding_map(inputs: Iterable[PyTreeType], devices: Sequence[jax.Device]) -> Iterable[PyTreeType]
 
    Maps iterables over PyTrees to iterables over sharded PyTrees, which are
    distributed on multiple devices.

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>fifteen.utils._git &mdash; fifteen  documentation</title>
@@ -12,11 +12,10 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
@@ -71,12 +70,16 @@
            <div itemprop="articleBody">
              
   <section id="module-fifteen.utils._git">
-<span id="fifteen-utils-git"></span><h1><a class="reference internal" href="#module-fifteen.utils._git" title="fifteen.utils._git"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.utils._git</span></code></a><a class="headerlink" href="#module-fifteen.utils._git" title="Permalink to this heading"></a></h1>
+<span id="fifteen-utils-git"></span><h1><a class="reference internal" href="#module-fifteen.utils._git" title="fifteen.utils._git"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.utils._git</span></code></a><a class="headerlink" href="#module-fifteen.utils._git" title="Permalink to this headline"></a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.utils._git.get_git_commit_hash" title="fifteen.utils._git.get_git_commit_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_git_commit_hash</span></code></a>(cwd: Optional[pathlib.Path] = None) → str</p></td>
 <td><p>Returns the current Git commit hash.</p></td>
@@ -88,13 +91,13 @@
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="fifteen.utils._git.get_git_commit_hash">
-<span class="sig-prename descclassname"><span class="pre">fifteen.utils._git.</span></span><span class="sig-name descname"><span class="pre">get_git_commit_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/fifteen/utils/_git/#get_git_commit_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.utils._git.get_git_commit_hash" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fifteen.utils._git.</span></span><span class="sig-name descname"><span class="pre">get_git_commit_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/fifteen/utils/_git/#get_git_commit_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.utils._git.get_git_commit_hash" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the current Git commit hash.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fifteen.utils._git.get_git_diff">
-<span class="sig-prename descclassname"><span class="pre">fifteen.utils._git.</span></span><span class="sig-name descname"><span class="pre">get_git_diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/fifteen/utils/_git/#get_git_diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.utils._git.get_git_diff" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fifteen.utils._git.</span></span><span class="sig-name descname"><span class="pre">get_git_diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/fifteen/utils/_git/#get_git_diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.utils._git.get_git_diff" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the output of <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">diff</span> <span class="pre">HEAD</span></code>.</p>
 </dd></dl>
 

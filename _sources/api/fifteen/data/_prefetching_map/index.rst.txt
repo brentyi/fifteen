@@ -32,8 +32,8 @@ Attributes
 
    
 
-.. function:: prefetching_map(inputs: fifteen.data.SizedIterable[PyTreeType], device: Optional[jax.lib.xla_client.Device] = None, buffer_size: int = 2) -> fifteen.data.SizedIterable[PyTreeType]
-              prefetching_map(inputs: Iterable[PyTreeType], device: Optional[jax.lib.xla_client.Device] = None, buffer_size: int = 2) -> Iterable[PyTreeType]
+.. function:: prefetching_map(inputs: fifteen.data.SizedIterable[PyTreeType], device: Optional[jax.Device] = None, buffer_size: int = 2) -> fifteen.data.SizedIterable[PyTreeType]
+              prefetching_map(inputs: Iterable[PyTreeType], device: Optional[jax.Device] = None, buffer_size: int = 2) -> Iterable[PyTreeType]
 
    Maps iterables over PyTrees to an identical iterable, but with a prefetching
    buffer under the hood. Adapted from ``flax.jax_utils.prefetch_to_device()``.

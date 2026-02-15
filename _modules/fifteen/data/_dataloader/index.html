@@ -11,11 +11,10 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
@@ -72,15 +71,15 @@
   <h1>Source code for fifteen.data._dataloader</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Multiprocessed dataloader implementation.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">dataclasses</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
 
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">multiprocess</span> <span class="k">as</span> <span class="nn">mp</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">onp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">multiprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onp</span>
 
-<span class="kn">from</span> <span class="nn">._protocols</span> <span class="kn">import</span> <span class="n">DataLoaderProtocol</span><span class="p">,</span> <span class="n">MapDatasetProtocol</span><span class="p">,</span> <span class="n">SizedIterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._protocols</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoaderProtocol</span><span class="p">,</span> <span class="n">MapDatasetProtocol</span><span class="p">,</span> <span class="n">SizedIterable</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
 <span class="n">CollateFunction</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">]],</span> <span class="n">T</span><span class="p">]</span>
@@ -89,7 +88,7 @@
 <span class="n">PyTreeType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;PyTreeType&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_worker_loop</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_worker_loop</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">:</span> <span class="n">MapDatasetProtocol</span><span class="p">,</span>
     <span class="n">index_queue</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">,</span>
     <span class="n">result_queue</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">,</span>
@@ -102,14 +101,14 @@
 
 
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">_WorkersState</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_WorkersState</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Objects needed for managing and cleaning up after workers.&quot;&quot;&quot;</span>
 
     <span class="n">workers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">mp</span><span class="o">.</span><span class="n">Process</span><span class="p">]</span>
     <span class="n">index_queue</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span>
     <span class="n">result_queue</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span>
 
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clean up workers.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index_queue</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result_queue</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -122,7 +121,7 @@
 
 
 <div class="viewcode-block" id="DataLoader"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._dataloader.DataLoader">[docs]</a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">DataLoader</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span> <span class="n">DataLoaderProtocol</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DataLoader</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span> <span class="n">DataLoaderProtocol</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Multiprocessed data loader, targeted at datasets that are too large to fit into</span>
 <span class="sd">    memory. Similar to PyTorch&#39;s data loader, but stateless.</span>
 
@@ -144,14 +143,14 @@
 <span class="sd">    amount of time (and memory) spent on JIT compilation in JAX and reduces concern of</span>
 <span class="sd">    noisy gradients from very small batch sizes.&quot;&quot;&quot;</span>
 
-    <span class="n">collate_fn</span><span class="p">:</span> <span class="n">CollateFunction</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">items</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span>
+    <span class="n">collate_fn</span><span class="p">:</span> <span class="n">CollateFunction</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">items</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
         <span class="k">lambda</span> <span class="o">*</span><span class="n">arrays</span><span class="p">:</span> <span class="n">onp</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="o">*</span><span class="n">items</span>
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Collate function. By default, we simply stack along `axis=0`.&quot;&quot;&quot;</span>
 
     <span class="n">workers_state</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_WorkersState</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DataLoader.__post_init__"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._dataloader.DataLoader.__post_init__">[docs]</a>    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DataLoader.__post_init__"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._dataloader.DataLoader.__post_init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Create workers on instantiation.</span>
         <span class="n">ctx</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">get_context</span><span class="p">(</span><span class="s2">&quot;spawn&quot;</span><span class="p">)</span>
 
@@ -188,7 +187,7 @@
                 <span class="p">),</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="DataLoader.minibatch_count"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._dataloader.DataLoader.minibatch_count">[docs]</a>    <span class="k">def</span> <span class="nf">minibatch_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="DataLoader.minibatch_count"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._dataloader.DataLoader.minibatch_count">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">minibatch_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the number of minibatches per epoch.&quot;&quot;&quot;</span>
         <span class="n">minibatch_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_size</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_last</span><span class="p">:</span>
@@ -197,11 +196,11 @@
             <span class="n">minibatch_count</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">minibatch_count</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">minibatch_count</span></div>
 
-<div class="viewcode-block" id="DataLoader.minibatches"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._dataloader.DataLoader.minibatches">[docs]</a>    <span class="k">def</span> <span class="nf">minibatches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shuffle_seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]:</span>
+<div class="viewcode-block" id="DataLoader.minibatches"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._dataloader.DataLoader.minibatches">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">minibatches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shuffle_seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an iterable over minibatches for our dataset. Optionally shuffled using</span>
 <span class="sd">        a random seed.&quot;&quot;&quot;</span>
 
-        <span class="n">indices</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">))</span>
+        <span class="n">indices</span><span class="p">:</span> <span class="n">onp</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">shuffle_seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">onp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">shuffle_seed</span><span class="p">)</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
 
@@ -217,14 +216,14 @@
 
 
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">_Minibatches</span><span class="p">(</span><span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span> <span class="n">Generic</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_Minibatches</span><span class="p">(</span><span class="n">SizedIterable</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span> <span class="n">Generic</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterable object for returning minibatches, with async support.&quot;&quot;&quot;</span>
 
     <span class="n">dataloader</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]</span>
     <span class="n">indices</span><span class="p">:</span> <span class="n">onp</span><span class="o">.</span><span class="n">ndarray</span>  <span class="c1"># Shape: (dataset length,)</span>
     <span class="n">minibatch_count</span><span class="p">:</span> <span class="nb">int</span>
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span>
         <span class="n">collate_fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">collate_fn</span>
         <span class="n">num_workers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">num_workers</span>
@@ -257,23 +256,23 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">minibatch_cache</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_get_minibatch_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">onp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_minibatch_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">onp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">start_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">minibatch_size</span> <span class="o">*</span> <span class="n">index</span>
         <span class="n">end_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">minibatch_size</span> <span class="o">*</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">[</span><span class="n">start_index</span><span class="p">:</span><span class="n">end_index</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_count</span>
 
 
-<span class="k">def</span> <span class="nf">_check</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">time</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
-    <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.auto</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
-    <span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">dataset</span><span class="p">:</span> <span class="n">MapDatasetProtocol</span><span class="p">[</span><span class="n">onp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">benchmark</span><span class="p">(</span><span class="n">dataset</span><span class="p">:</span> <span class="n">MapDatasetProtocol</span><span class="p">[</span><span class="n">onp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Benchmark some simulated training job for both a synchronous and an async dataloader.&quot;&quot;&quot;</span>
         <span class="n">loaders</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;synchronous&quot;</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
@@ -290,14 +289,14 @@
             <span class="p">)</span>
 
     <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
-    <span class="k">class</span> <span class="nc">DummyDataset</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">DummyDataset</span><span class="p">:</span>
         <span class="n">delay</span><span class="p">:</span> <span class="nb">float</span>
 
-        <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">onp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">return</span> <span class="mi">500</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Simple dataset&quot;</span><span class="p">)</span>

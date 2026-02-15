@@ -11,11 +11,10 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
@@ -70,14 +69,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for fifteen.data._cycled_minibatches</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
 
-<span class="kn">from</span> <span class="nn">._protocols</span> <span class="kn">import</span> <span class="n">DataLoaderProtocol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._protocols</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoaderProtocol</span>
 
 <span class="n">PyTreeType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;PyTreeType&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="cycled_minibatches"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._cycled_minibatches.cycled_minibatches">[docs]</a><span class="k">def</span> <span class="nf">cycled_minibatches</span><span class="p">(</span>
+<div class="viewcode-block" id="cycled_minibatches"><a class="viewcode-back" href="../../../../api/fifteen/data/#fifteen.data._cycled_minibatches.cycled_minibatches">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">cycled_minibatches</span><span class="p">(</span>
     <span class="n">dataloader</span><span class="p">:</span> <span class="n">DataLoaderProtocol</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">],</span>
     <span class="n">shuffle_seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">PyTreeType</span><span class="p">]:</span>

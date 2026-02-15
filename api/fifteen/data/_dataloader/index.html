@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>fifteen.data._dataloader &mdash; fifteen  documentation</title>
@@ -12,11 +12,10 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
@@ -71,13 +70,17 @@
            <div itemprop="articleBody">
              
   <section id="module-fifteen.data._dataloader">
-<span id="fifteen-data-dataloader"></span><h1><a class="reference internal" href="#module-fifteen.data._dataloader" title="fifteen.data._dataloader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.data._dataloader</span></code></a><a class="headerlink" href="#module-fifteen.data._dataloader" title="Permalink to this heading"></a></h1>
+<span id="fifteen-data-dataloader"></span><h1><a class="reference internal" href="#module-fifteen.data._dataloader" title="fifteen.data._dataloader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fifteen.data._dataloader</span></code></a><a class="headerlink" href="#module-fifteen.data._dataloader" title="Permalink to this headline"></a></h1>
 <p>Multiprocessed dataloader implementation.</p>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.data._dataloader.DataLoader" title="fifteen.data._dataloader.DataLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataLoader</span></code></a></p></td>
 <td><p>Multiprocessed data loader, targeted at datasets that are too large to fit into</p></td>
@@ -86,8 +89,12 @@
 </table>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline"></a></h3>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#fifteen.data._dataloader.T" title="fifteen.data._dataloader.T"><code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code></a></p></td>
 <td><p></p></td>
@@ -178,7 +185,7 @@ noisy gradients from very small batch sizes.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="fifteen.data._dataloader.DataLoader.minibatches">
-<span class="sig-name descname"><span class="pre">minibatches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../#fifteen.data.SizedIterable" title="fifteen.data.SizedIterable"><span class="pre">fifteen.data.SizedIterable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">PyTreeType</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/fifteen/data/_dataloader/#DataLoader.minibatches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.data._dataloader.DataLoader.minibatches" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">minibatches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../#fifteen.data.SizedIterable" title="fifteen.data.SizedIterable"><span class="pre">fifteen.data.SizedIterable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">PyTreeType</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/fifteen/data/_dataloader/#DataLoader.minibatches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fifteen.data._dataloader.DataLoader.minibatches" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an iterable over minibatches for our dataset. Optionally shuffled using
 a random seed.</p>
 </dd></dl>
