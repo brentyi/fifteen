@@ -16,7 +16,7 @@ class InMemoryDataLoader(Generic[PyTreeType], DataLoaderProtocol[PyTreeType]):
     structure.
 
     The first axis of every array should correspond to the total sample count; each
-    sample will therefore be indexable via `jax.tree_map(lambda x: x[i, ...], dataset)`.
+    sample will therefore be indexable via `jax.tree.map(lambda x: x[i, ...], dataset)`.
 
     :meth:`minibatches()` can then be used to construct an (optionally shuffled)
     sequence of minibatches."""
@@ -34,7 +34,7 @@ class InMemoryDataLoader(Generic[PyTreeType], DataLoaderProtocol[PyTreeType]):
     sample_count: int = dataclasses.field(init=False)
 
     def __post_init__(self):
-        shapes = [x.shape for x in jax.tree_leaves(self.dataset)]
+        shapes = [x.shape for x in jax.tree.leaves(self.dataset)]
         assert len(shapes) > 0, "Dataset should contain at least one array."
 
         sample_counts = [shape[0] for shape in shapes]
@@ -88,7 +88,7 @@ class _Minibatches(Sequence[PyTreeType], Generic[PyTreeType]):
         start_index = self.minibatch_size * i
         end_index = min(self.minibatch_size * (i + 1), self.indices.shape[0])
         minibatch_indices = self.indices[start_index:end_index]
-        return jax.tree_map(lambda x: x[minibatch_indices, ...], self.dataset)
+        return jax.tree.map(lambda x: x[minibatch_indices, ...], self.dataset)
 
     def __len__(self):
         return self.minibatch_count

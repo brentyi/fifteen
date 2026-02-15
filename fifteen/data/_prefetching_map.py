@@ -3,7 +3,6 @@ import dataclasses
 from typing import Iterable, Optional, TypeVar, Union, cast, overload
 
 import jax
-from jax.lib import xla_client
 
 from ._protocols import SizedIterable
 
@@ -13,24 +12,22 @@ PyTreeType = TypeVar("PyTreeType")
 @overload
 def prefetching_map(
     inputs: SizedIterable[PyTreeType],
-    device: Optional[xla_client.Device] = None,
+    device: Optional[jax.Device] = None,
     buffer_size: int = 2,
-) -> SizedIterable[PyTreeType]:
-    ...
+) -> SizedIterable[PyTreeType]: ...
 
 
 @overload
 def prefetching_map(
     inputs: Iterable[PyTreeType],
-    device: Optional[xla_client.Device] = None,
+    device: Optional[jax.Device] = None,
     buffer_size: int = 2,
-) -> Iterable[PyTreeType]:
-    ...
+) -> Iterable[PyTreeType]: ...
 
 
 def prefetching_map(
     inputs: Union[Iterable[PyTreeType], SizedIterable[PyTreeType]],
-    device: Optional[xla_client.Device] = None,
+    device: Optional[jax.Device] = None,
     buffer_size: int = 2,
 ) -> Union[Iterable[PyTreeType], SizedIterable[PyTreeType]]:
     """Maps iterables over PyTrees to an identical iterable, but with a prefetching
@@ -59,7 +56,7 @@ def prefetching_map(
 @dataclasses.dataclass
 class _PrefetchingMap(Iterable[PyTreeType]):
     inputs: Iterable[PyTreeType]
-    device: Optional[jax.lib.xla_client.Device]
+    device: Optional[jax.Device]
     buffer_size: int
 
     def __iter__(self):
@@ -76,9 +73,6 @@ class _PrefetchingMap(Iterable[PyTreeType]):
                 return
 
             if self.device is not None:
-                assert not isinstance(
-                    item, jax.lib.xla_extension.pmap_lib.ShardedDeviceArray
-                ), "Should not move sharded arrays -- device should be set to `None`."
                 item = jax.device_put(item, device=self.device)
             queue.append(item)
 

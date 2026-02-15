@@ -4,6 +4,7 @@ import jax
 import jax_dataclasses
 import numpy as onp
 from jax import numpy as jnp
+from typing import overload
 
 T = TypeVar("T")
 Array = Union[jnp.ndarray, onp.ndarray]
@@ -70,8 +71,6 @@ class TensorboardLogData:
 
         scalars: Dict[str, Scalar] = {}
         for k, v in self.scalars.items():
-            assert isinstance(v, jax.lib.xla_extension.pmap_lib.ShardedDeviceArray)
-
             # We pull out the first value on the first device.
             scalars[k] = v[tuple(0 for _ in range(len(v.shape)))]  # type: ignore
 

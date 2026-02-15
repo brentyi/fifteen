@@ -3,7 +3,6 @@ from typing import Iterable, Sequence, TypeVar, Union, cast, overload
 
 import jax
 from jax import numpy as jnp
-from jax.lib import xla_client
 
 from ._protocols import SizedIterable
 
@@ -13,22 +12,20 @@ PyTreeType = TypeVar("PyTreeType")
 @overload
 def sharding_map(
     inputs: SizedIterable[PyTreeType],
-    devices: Sequence[xla_client.Device],
-) -> SizedIterable[PyTreeType]:
-    ...
+    devices: Sequence[jax.Device],
+) -> SizedIterable[PyTreeType]: ...
 
 
 @overload
 def sharding_map(
     inputs: Iterable[PyTreeType],
-    devices: Sequence[xla_client.Device],
-) -> Iterable[PyTreeType]:
-    ...
+    devices: Sequence[jax.Device],
+) -> Iterable[PyTreeType]: ...
 
 
 def sharding_map(
     inputs: Union[Iterable[PyTreeType], SizedIterable[PyTreeType]],
-    devices: Sequence[xla_client.Device],
+    devices: Sequence[jax.Device],
 ) -> Union[Iterable[PyTreeType], SizedIterable[PyTreeType]]:
     """Maps iterables over PyTrees to iterables over sharded PyTrees, which are
     distributed on multiple devices.
@@ -46,7 +43,7 @@ def sharding_map(
 @dataclasses.dataclass
 class _ShardingMap(Iterable[PyTreeType]):
     inputs: Iterable[PyTreeType]
-    devices: Sequence[xla_client.Device]
+    devices: Sequence[jax.Device]
 
     def __iter__(self):
         device_count = len(self.devices)
@@ -61,7 +58,7 @@ class _ShardingMap(Iterable[PyTreeType]):
             )
             return jax.device_put_sharded(list(leaf), devices=self.devices)
 
-        return iter(map(lambda pytree: jax.tree_map(shard, pytree), self.inputs))
+        return iter(map(lambda pytree: jax.tree.map(shard, pytree), self.inputs))
 
 
 @dataclasses.dataclass

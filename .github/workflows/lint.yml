@@ -10,8 +10,12 @@ jobs:
   black-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Black Code Formatter
-        uses: lgeiger/black-action@master
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          args: ". --check"
+          python-version: "3.10"
+      - name: Check formatting with black
+        run: |
+          pip install black
+          black . --check

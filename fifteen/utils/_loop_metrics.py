@@ -13,20 +13,17 @@ class LoopMetrics:
 
 
 @overload
-def range_with_metrics(stop: int, /) -> SizedIterable[LoopMetrics]:
-    ...
+def range_with_metrics(stop: int, /) -> SizedIterable[LoopMetrics]: ...
 
 
 @overload
-def range_with_metrics(start: int, stop: int, /) -> SizedIterable[LoopMetrics]:
-    ...
+def range_with_metrics(start: int, stop: int, /) -> SizedIterable[LoopMetrics]: ...
 
 
 @overload
 def range_with_metrics(
     start: int, stop: int, step: int, /
-) -> SizedIterable[LoopMetrics]:
-    ...
+) -> SizedIterable[LoopMetrics]: ...
 
 
 def range_with_metrics(*args: int) -> SizedIterable[LoopMetrics]:

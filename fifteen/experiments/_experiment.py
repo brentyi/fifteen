@@ -2,6 +2,7 @@
 
 Source: https://github.com/brentyi/dfgo/blob/master/lib/experiment_files.py
 """
+
 import dataclasses
 import functools
 import pathlib
@@ -126,16 +127,12 @@ class Experiment:
         prefix: str = "checkpoint_",
     ) -> PytreeType:
         """Thin wrapper around flax's `restore_checkpoint()` function."""
-        state_dict = flax.training.checkpoints.restore_checkpoint(
+        return flax.training.checkpoints.restore_checkpoint(
             ckpt_dir=str(self.data_dir),
-            target=None,  # Allows us to raise an error if no checkpoint was found.
+            target=target,
             step=step,
             prefix=prefix,
         )
-        if state_dict is None:
-            raise FileNotFoundError("No checkpoint found!")
-        self._print("Successfully loaded checkpoint!")
-        return flax.serialization.from_state_dict(target, state_dict)
 
     #  Tensorboard logging helpers.
 

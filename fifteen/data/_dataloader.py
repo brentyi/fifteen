@@ -72,7 +72,7 @@ class DataLoader(Generic[PyTreeType], DataLoaderProtocol[PyTreeType]):
     amount of time (and memory) spent on JIT compilation in JAX and reduces concern of
     noisy gradients from very small batch sizes."""
 
-    collate_fn: CollateFunction = lambda items: jax.tree_map(
+    collate_fn: CollateFunction = lambda items: jax.tree.map(
         lambda *arrays: onp.stack(arrays, axis=0), *items
     )
     """Collate function. By default, we simply stack along `axis=0`."""
@@ -129,7 +129,7 @@ class DataLoader(Generic[PyTreeType], DataLoaderProtocol[PyTreeType]):
         """Returns an iterable over minibatches for our dataset. Optionally shuffled using
         a random seed."""
 
-        indices = onp.arange(len(self.dataset))
+        indices: onp.ndarray = onp.arange(len(self.dataset))
         if shuffle_seed is not None:
             onp.random.default_rng(seed=shuffle_seed).shuffle(indices)
 
